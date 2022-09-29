@@ -5,7 +5,9 @@ import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiAccount, mdiLock } from "@mdi/js";
 import Icon from "@mdi/react";
 
-export const Login = () => {
+export const Login = ({ onLogin }: { onLogin: Function }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <div
       className="container d-flex flex-column justify-content-center align-items-center border rounded p-5"
@@ -16,15 +18,26 @@ export const Login = () => {
         <InputGroupText>
           <Icon path={mdiAccount} title="Username" size={1} color="black" />
         </InputGroupText>
-        <Input placeholder="username" />
+        <Input
+          placeholder="username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </InputGroup>
       <InputGroup className="my-2">
         <InputGroupText>
           <Icon path={mdiLock} title="Password" size={1} color="black" />
         </InputGroupText>
-        <Input placeholder="password" />
+        <Input
+          type="password"
+          placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </InputGroup>
-      <Button color="primary" className="px-5 mt-5">
+      <Button
+        color="primary"
+        className="px-5 mt-5"
+        onClick={() => onLogin({ username, password })}
+      >
         Log in
       </Button>
     </div>

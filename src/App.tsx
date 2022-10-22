@@ -1,9 +1,11 @@
 import React from "react";
 import "./App.css";
 import { Login } from "./views/Login/Login";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { Main } from "./views/Main/Main";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Credentials } from "./backendTypes";
 import axios from "axios";
+import { loader } from "./utilities";
 
 const getToken = async ({ username, password }: Credentials) => {
   const response = await axios.post(
@@ -19,7 +21,13 @@ const getToken = async ({ username, password }: Credentials) => {
     localStorage.setItem("token", response.data.token);
   }
 };
+
 const router = createBrowserRouter([
+  {
+    path: "/",
+    loader: () => loader({ path: "api/users" }),
+    element: <Main />,
+  },
   {
     path: "/login",
     element: <Login onLogin={getToken} />,

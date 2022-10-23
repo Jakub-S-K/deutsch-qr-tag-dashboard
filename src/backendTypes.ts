@@ -3,7 +3,7 @@ export interface Credentials {
   password: string | undefined;
 }
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   surname: string;
 }

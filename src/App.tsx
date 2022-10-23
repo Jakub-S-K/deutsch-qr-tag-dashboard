@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Credentials } from "./backendTypes";
 import axios from "axios";
 import { loader } from "./utilities";
+import { Users as UsersPage } from "./views/Users/Users";
 
 const getToken = async ({ username, password }: Credentials) => {
   const response = await axios.post(
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
     path: "/",
     loader: () => loader({ path: "api/users" }),
     element: <Main />,
+  },
+  {
+    path: "/users",
+    loader: () => loader({ path: "api/users" }),
+    element: <UsersPage />,
   },
   {
     path: "/login",

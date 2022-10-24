@@ -73,6 +73,9 @@ export const validate = async ({
           },
         }
       );
+      if (response.status === 401) {
+        return redirect("/login");
+      }
       return redirect("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {

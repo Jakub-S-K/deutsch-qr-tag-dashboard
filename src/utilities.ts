@@ -9,6 +9,9 @@ export const loader = async ({
   path: string;
   requestType?: "GET" | "POST";
 }) => {
+  if (!localStorage.getItem("token")) {
+    localStorage.setItem("token", "");
+  }
   if (requestType === "GET") {
     try {
       const response = await axios.get<User[]>(
@@ -62,6 +65,10 @@ export const validate = async ({
   path?: string;
   requestType?: "GET" | "POST";
 }) => {
+  if (!localStorage.getItem("token")) {
+    localStorage.setItem("token", "");
+    return;
+  }
   if (requestType === "GET") {
     try {
       const response = await axios.get<User[]>(

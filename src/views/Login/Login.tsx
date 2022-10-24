@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiAccount, mdiLock } from "@mdi/js";
 import Icon from "@mdi/react";
 
 export const Login = ({ onLogin }: { onLogin: Function }) => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -36,7 +38,10 @@ export const Login = ({ onLogin }: { onLogin: Function }) => {
       <Button
         color="primary"
         className="px-5 mt-5"
-        onClick={() => onLogin({ username, password })}
+        onClick={() => {
+          navigate("/");
+          return onLogin({ username, password });
+        }}
       >
         Log in
       </Button>

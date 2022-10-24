@@ -5,7 +5,7 @@ import { Main } from "./views/Main/Main";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Credentials } from "./backendTypes";
 import axios from "axios";
-import { loader } from "./utilities";
+import { loader, validate } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 
 const getToken = async ({ username, password }: Credentials) => {
@@ -36,6 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
+    loader: () => validate({}),
     element: <Login onLogin={getToken} />,
   },
 ]);

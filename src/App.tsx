@@ -7,6 +7,7 @@ import { Credentials } from "./backendTypes";
 import axios from "axios";
 import { loader, validate } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
+import { UserForm } from "./views/Users/UserForm";
 
 const getToken = async ({ username, password }: Credentials) => {
   const response = await axios.post(
@@ -20,6 +21,7 @@ const getToken = async ({ username, password }: Credentials) => {
   );
   if (response.status === 200) {
     localStorage.setItem("token", response.data.token);
+    window.location.reload();
   }
 };
 
@@ -35,6 +37,15 @@ const router = createBrowserRouter([
     element: <UsersPage />,
   },
   {
+    path: "/users/:id",
+    loader: ({ params }) => loader({ path: `api/user/${params.id}` }),
+    element: <UserForm />,
+  },
+  {
+    path: "/add/user",
+    element: <UserForm />,
+  },
+  {
     path: "/login",
     loader: () => validate({}),
     element: <Login onLogin={getToken} />,
@@ -42,7 +53,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  console.log(localStorage.getItem("token"));
   return (
     <>
       <RouterProvider router={router} />

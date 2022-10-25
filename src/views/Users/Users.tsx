@@ -3,26 +3,33 @@ import { Button, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
 import { User } from "../../backendTypes";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 export const Users = () => {
   const names = ["id", "Name", "Surname", "Actions"];
+  const navigate = useNavigate();
   const userData: any = useLoaderData();
   return (
     <Table striped>
       <thead>
-        {names.map((value) => (
-          <th>{value}</th>
-        ))}
+        <tr>
+          {names.map((value, index) => (
+            <th key={index + "-" + value}>{value}</th>
+          ))}
+        </tr>
       </thead>
       <tbody>
-        {userData.map((user: User) => (
-          <tr>
-            <td>{user._id}</td>
-            <td>{user.name}</td>
-            <td>{user.surname}</td>
+        {userData.map((user: User, index: number) => (
+          <tr key={index + "-r"}>
+            <td key={index + "-id"}>{user._id}</td>
+            <td key={index + "-name"}>{user.name}</td>
+            <td key={index + "-surname"}>{user.surname}</td>
             <td>
-              <Button color="warning" className="mx-2">
+              <Button
+                color="warning"
+                className="mx-2"
+                onClick={() => navigate(`/users/${user._id}`)}
+              >
                 <Icon path={mdiPencil} title="Edit" size={0.75} color="black" />
               </Button>
               <Button color="danger">

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiFileDocumentEdit, mdiTrophy } from "@mdi/js";
 import Icon from "@mdi/react";
+import { useNavigate } from "react-router-dom";
 
 export const Main = () => {
+  const navigate = useNavigate();
   return (
     <>
       <h3 className="">Contest title</h3>
@@ -38,10 +40,19 @@ export const Main = () => {
         <Button color="primary" outline className="px-5 mx-3">
           Leaderboard
         </Button>
-        <Button color="warning" outline className="px-5 mx-3">
+        <Button
+          color="warning"
+          outline
+          className="px-5 mx-3"
+          onClick={() => navigate("/users")}
+        >
           Manage
         </Button>
-        <Button color="success" className="px-5 mx-3">
+        <Button
+          color="success"
+          className="px-5 mx-3"
+          onClick={() => navigate("/add/user")}
+        >
           Add user
         </Button>
       </div>

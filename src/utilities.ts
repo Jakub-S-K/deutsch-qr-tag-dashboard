@@ -9,9 +9,6 @@ export const loader = async ({
   path: string;
   requestType?: "GET" | "POST";
 }) => {
-  if (!localStorage.getItem("token")) {
-    localStorage.setItem("token", "");
-  }
   if (requestType === "GET") {
     try {
       const response = await axios.get<User[]>(
@@ -59,7 +56,7 @@ export const loader = async ({
 };
 
 export const validate = async ({
-  path = "api/users",
+  path = "api/access_test",
   requestType = "GET",
 }: {
   path?: string;
@@ -81,12 +78,12 @@ export const validate = async ({
         }
       );
       if (response.status === 401) {
-        return redirect("/login");
+        return;
       }
       return redirect("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return redirect("/login");
+        return;
       } else {
         console.log(error);
       }

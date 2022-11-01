@@ -4,6 +4,7 @@ import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
 import { User } from "../../backendTypes";
 import { loader } from "../../utilities";
+import { Retreat } from "../../components/Retreat/Retreat";
 import { useLoaderData } from "react-router-dom";
 
 export const UserForm = () => {
@@ -21,6 +22,7 @@ export const UserForm = () => {
   console.log(`${userData.surname} -> ${user.surname}`);
   return (
     <>
+      <Retreat />
       {status === 200 ? (
         <div
           color="success"

@@ -8,7 +8,7 @@ export const loader = async ({
   payload = {},
 }: {
   path: string;
-  requestType?: "GET" | "POST" | "PATCH";
+  requestType?: "GET" | "POST" | "PATCH" | "DELETE";
   payload?: any;
 }) => {
   if (requestType === "GET") {
@@ -72,6 +72,26 @@ export const loader = async ({
         return redirect("/login");
       }
       console.log(response);
+      return response.status;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return redirect("/login");
+      } else {
+        console.log(error);
+      }
+    }
+  }
+  if (requestType === "DELETE") {
+    try {
+      const response = await axios.delete<User[]>(
+        `${process.env.REACT_APP_URL}/${path}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "content-type": "application/json",
+          },
+        }
+      );
       return response.status;
     } catch (error) {
       if (axios.isAxiosError(error)) {

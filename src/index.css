@@ -16,3 +16,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.input-orange {
+  background-color: #ffd8a9 !important;
+}
+.vertical-line {
+  width: 80%;
+  border: 1px solid #e38b29;
+}

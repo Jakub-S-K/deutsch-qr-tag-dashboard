@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Input, Label, Table } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { Alert, Button, Input, Label, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
 import { User } from "../../backendTypes";
@@ -16,6 +16,11 @@ export const UserForm = () => {
   }
   const [user, setUser] = useState(userData);
   const [status, setStatus] = useState(-1);
+  useEffect(() => {
+    setTimeout(() => {
+      setStatus(-1);
+    }, 2000);
+  }, [status]);
   const handleChange = (property: "name" | "surname", value: string) => {
     setUser({ ...user, [property]: value });
   };
@@ -23,14 +28,7 @@ export const UserForm = () => {
   return (
     <>
       <Retreat />
-      {status === 200 ? (
-        <div
-          color="success"
-          className="border border-2 border-success rounded text-center text-success"
-        >
-          Zapisano pomyślnie!
-        </div>
-      ) : null}
+      {status === 200 ? <Alert>Zapisano pomyślnie</Alert> : null}
       <Label for="name">Imię</Label>
       <Input
         id="name"

@@ -77,12 +77,14 @@ export const UserForm = () => {
         <Button
           color="success"
           outline
-          onClick={() =>
-            loader({
-              path: "api/user",
-              requestType: "POST",
-              payload: { name: user.name, surname: user.surname },
-            })
+          onClick={async () =>
+            setStatus(
+              await loader({
+                path: "api/user",
+                requestType: "POST",
+                payload: { name: user.name, surname: user.surname },
+              })
+            )
           }
         >
           Dodaj użytkownika

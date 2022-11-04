@@ -1,6 +1,6 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import { User } from "./backendTypes";
+import { User, PostRequest } from "./backendTypes";
 
 export const loader = async ({
   path,
@@ -33,7 +33,7 @@ export const loader = async ({
   }
   if (requestType === "POST") {
     try {
-      const response = await axios.post(
+      const response = await axios.post<PostRequest>(
         `${process.env.REACT_APP_URL}/${path}`,
         { ...payload },
         {
@@ -47,7 +47,7 @@ export const loader = async ({
         return redirect("/login");
       }
       console.log(response);
-      return response.data;
+      return response.status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return redirect("/login");

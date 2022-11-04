@@ -7,3 +7,9 @@ export interface User {
   name: string;
   surname: string;
 }
+export interface PostRequest {
+  status: number;
+  data: {
+    _id: string;
+  };
+}

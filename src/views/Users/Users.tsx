@@ -30,7 +30,7 @@ export const Users = () => {
   const navigate = useNavigate();
   const userData: any = useLoaderData();
   return (
-    <div>
+    <div className="row">
       <Confirm
         isOpen={modal.isOpen}
         toggle={() => toggleModal()}

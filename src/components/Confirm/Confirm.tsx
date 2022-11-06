@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { mdiArrowLeft } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -12,6 +12,7 @@ type ConfirmProps = {
   _id: string;
   name: string;
   surname: string;
+  deleteUser: Function;
 } & User;
 
 export const Confirm = ({
@@ -20,6 +21,7 @@ export const Confirm = ({
   name,
   surname,
   _id,
+  deleteUser,
 }: ConfirmProps) => {
   return (
     <Modal isOpen={isOpen}>
@@ -34,9 +36,11 @@ export const Confirm = ({
         </Button>
         <Button
           color="danger"
-          onClick={() =>
-            loader({ path: `api/user/${_id}`, requestType: "DELETE" })
-          }
+          onClick={() => {
+            loader({ path: `api/user/${_id}`, requestType: "DELETE" });
+            toggle();
+            deleteUser(_id);
+          }}
         >
           Usuń
         </Button>{" "}

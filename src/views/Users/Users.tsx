@@ -28,7 +28,10 @@ export const Users = () => {
     setModal({ ...modal, isOpen: !modal.isOpen, ...user });
   };
   const navigate = useNavigate();
-  const userData: any = useLoaderData();
+  const [userData, setUserData]: any = useState(useLoaderData());
+  const deleteUser = (id: string) => {
+    setUserData([...userData.filter((user: User) => user._id !== id)]);
+  };
   return (
     <div className="row">
       <Confirm
@@ -37,6 +40,7 @@ export const Users = () => {
         name={modal.name}
         surname={modal.surname}
         _id={modal._id}
+        deleteUser={deleteUser}
       />
       <Table striped>
         <thead>

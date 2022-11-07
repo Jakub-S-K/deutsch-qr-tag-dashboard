@@ -4,101 +4,103 @@ import { User, PostRequest } from "./backendTypes";
 
 export const loader = async ({
   path,
-  requestType = "GET",
-  payload = {},
 }: {
   path: string;
-  requestType?: "GET" | "POST" | "PATCH" | "DELETE";
+  requestType?: "GET";
   payload?: any;
 }) => {
-  if (requestType === "GET") {
-    try {
-      const response = await axios.get<User[]>(
-        `${process.env.REACT_APP_URL}/${path}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "content-type": "application/json",
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return redirect("/login");
-      } else {
-        console.log(error);
+  try {
+    const response = await axios.get<User[]>(
+      `${process.env.REACT_APP_URL}/${path}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json",
+        },
       }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return redirect("/login");
+    } else {
+      console.log(error);
     }
   }
-  if (requestType === "POST") {
-    try {
-      const response = await axios.post<PostRequest>(
-        `${process.env.REACT_APP_URL}/${path}`,
-        { ...payload },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "content-type": "application/json",
-          },
-        }
-      );
-      if (response.status === 401) {
-        return redirect("/login");
+};
+export const deleteRequest = async ({ path }: { path: string }) => {
+  try {
+    const response = await axios.delete<number>(
+      `${process.env.REACT_APP_URL}/${path}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json",
+        },
       }
-      console.log(response);
-      return response.status;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return redirect("/login");
-      } else {
-        console.log(error);
-      }
+    );
+    return response.status;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return redirect("/login");
+    } else {
+      console.log(error);
     }
   }
-  if (requestType === "PATCH") {
-    try {
-      const response = await axios.patch(
-        `${process.env.REACT_APP_URL}/${path}`,
-        { ...payload },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "content-type": "application/json",
-          },
-        }
-      );
-      if (response.status === 401) {
-        return redirect("/login");
+};
+export const postRequest = async ({
+  path,
+  payload,
+}: {
+  path: string;
+  payload: object;
+}) => {
+  try {
+    const response = await axios.post<PostRequest>(
+      `${process.env.REACT_APP_URL}/${path}`,
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json",
+        },
       }
-      console.log(response);
-      return response.status;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return redirect("/login");
-      } else {
-        console.log(error);
-      }
+    );
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return -1;
+    } else {
+      console.log(error);
     }
   }
-  if (requestType === "DELETE") {
-    try {
-      const response = await axios.delete<User[]>(
-        `${process.env.REACT_APP_URL}/${path}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "content-type": "application/json",
-          },
-        }
-      );
-      return response.status;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return redirect("/login");
-      } else {
-        console.log(error);
+};
+export const patchRequest = async ({
+  path,
+  payload,
+}: {
+  path: string;
+  payload: object;
+}) => {
+  try {
+    const response = await axios.patch(
+      `${process.env.REACT_APP_URL}/${path}`,
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json",
+        },
       }
+    );
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return -1;
+    } else {
+      console.log(error);
     }
   }
 };

@@ -3,7 +3,7 @@ import { Alert, Button, Input, Label, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
 import { User } from "../../backendTypes";
-import { loader } from "../../utilities";
+import { patchRequest, postRequest } from "../../utilities";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useLoaderData } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export const UserForm = () => {
     userModify = false;
   }
   const [user, setUser] = useState(userData);
-  const [status, setStatus] = useState(-1);
+  const [status, setStatus] = useState<number | undefined>(-1);
   useEffect(() => {
     setTimeout(() => {
       setStatus(-1);
@@ -63,9 +63,8 @@ export const UserForm = () => {
           color="primary"
           onClick={async () =>
             setStatus(
-              await loader({
+              await patchRequest({
                 path: `api/user/${user._id}`,
-                requestType: "PATCH",
                 payload: { name: user.name, surname: user.surname },
               })
             )
@@ -79,9 +78,8 @@ export const UserForm = () => {
           outline
           onClick={async () =>
             setStatus(
-              await loader({
+              await postRequest({
                 path: "api/user",
-                requestType: "POST",
                 payload: { name: user.name, surname: user.surname },
               })
             )

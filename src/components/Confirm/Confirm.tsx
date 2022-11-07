@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { mdiArrowLeft } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useNavigate } from "react-router-dom";
-import { loader } from "../../utilities";
+import { deleteRequest } from "../../utilities";
 import { User } from "../../backendTypes";
 
 type ConfirmProps = {
@@ -37,7 +37,7 @@ export const Confirm = ({
         <Button
           color="danger"
           onClick={() => {
-            loader({ path: `api/user/${_id}`, requestType: "DELETE" });
+            deleteRequest({ path: `api/user/${_id}` });
             toggle();
             deleteUser(_id);
           }}

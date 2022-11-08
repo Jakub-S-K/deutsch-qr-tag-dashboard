@@ -1,6 +1,6 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import { User, PostRequest, responseStatus } from "./backendTypes";
+import { User, PostRequest, responseStatus, Credentials } from "./backendTypes";
 
 export const loader = async ({
   path,
@@ -142,4 +142,20 @@ export const validate = async ({
       }
     }
   }
+};
+const getToken = async ({ username, password }: Credentials) => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_URL}/api/login`,
+    { username: username, password: password },
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    }
+  );
+  if (typeof response.data.token !== "undefined") {
+    localStorage.setItem("token", response.data.token);
+    return responseStatus.SUCCESS;
+  }
+  return responseStatus.ERR_UNAUTHORIZED;
 };

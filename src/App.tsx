@@ -1,31 +1,13 @@
-import React, { createContext, useState } from "react";
+import React from "react";
 import "./App.css";
 import { Login } from "./views/Login/Login";
 import { Main } from "./views/Main/Main";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Credentials } from "./backendTypes";
-import axios from "axios";
 import { loader, validate } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
 import { Alert } from "./components/Alert/Alert";
 import { AlertContext, useValue } from "./contexts";
-
-const getToken = async ({ username, password }: Credentials) => {
-  const response = await axios.post(
-    `${process.env.REACT_APP_URL}/api/login`,
-    { username: username, password: password },
-    {
-      headers: {
-        "content-type": "application/json",
-      },
-    }
-  );
-  if (response.status === 200) {
-    localStorage.setItem("token", response.data.token);
-    window.location.reload();
-  }
-};
 
 const router = createBrowserRouter([
   {
@@ -50,7 +32,7 @@ const router = createBrowserRouter([
   {
     path: "/login",
     loader: () => validate({}),
-    element: <Login onLogin={getToken} />,
+    element: <Login />,
   },
 ]);
 

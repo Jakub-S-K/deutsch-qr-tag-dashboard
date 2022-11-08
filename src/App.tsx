@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import "./App.css";
 import { Login } from "./views/Login/Login";
 import { Main } from "./views/Main/Main";
@@ -8,6 +8,8 @@ import axios from "axios";
 import { loader, validate } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
+import { Alert } from "./components/Alert/Alert";
+import { AlertContext, useValue } from "./contexts";
 
 const getToken = async ({ username, password }: Credentials) => {
   const response = await axios.post(
@@ -54,9 +56,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="content container">
-      <RouterProvider router={router} />
-    </div>
+    <AlertContext.Provider value={useValue()}>
+      <div className="content container">
+        <Alert>Witaaaj</Alert>
+        <RouterProvider router={router} />
+      </div>
+    </AlertContext.Provider>
   );
 }
 

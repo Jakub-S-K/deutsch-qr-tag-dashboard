@@ -1,6 +1,6 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import { User, PostRequest } from "./backendTypes";
+import { User, PostRequest, responseStatus } from "./backendTypes";
 
 export const loader = async ({
   path,
@@ -22,7 +22,9 @@ export const loader = async ({
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return redirect("/login");
+      if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
+        return responseStatus.ERR_UNAUTHORIZED;
+      }
     } else {
       console.log(error);
     }
@@ -42,7 +44,8 @@ export const deleteRequest = async ({ path }: { path: string }) => {
     return response.status;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return redirect("/login");
+      console.log(error);
+      return responseStatus.ERR_UNAUTHORIZED;
     } else {
       console.log(error);
     }
@@ -70,7 +73,7 @@ export const postRequest = async ({
     return response.status;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return -1;
+      return responseStatus.ERR_UNAUTHORIZED;
     } else {
       console.log(error);
     }
@@ -114,7 +117,7 @@ export const validate = async ({
 }) => {
   if (!localStorage.getItem("token")) {
     localStorage.setItem("token", "");
-    return;
+    return responseStatus.ERR_UNAUTHORIZED;
   }
   if (requestType === "GET") {
     try {
@@ -127,13 +130,13 @@ export const validate = async ({
           },
         }
       );
-      if (response.status === 401) {
-        return;
+      if (response.status === responseStatus.ERR_UNAUTHORIZED) {
+        return responseStatus.ERR_UNAUTHORIZED;
       }
-      return redirect("/");
+      return response.status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return;
+        return responseStatus.ERR_UNAUTHORIZED;
       } else {
         console.log(error);
       }

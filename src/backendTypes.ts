@@ -13,3 +13,11 @@ export interface PostRequest {
     _id: string;
   };
 }
+export enum responseStatus {
+  SUCCESS = 200,
+  ERR_BAD_REQUEST = 400,
+  ERR_UNAUTHORIZED = 401,
+  ERR_NOT_FOUND = 404,
+  ERR_ALREADY_EXISTS = 409,
+  ERR_INTERNAL = 500,
+}

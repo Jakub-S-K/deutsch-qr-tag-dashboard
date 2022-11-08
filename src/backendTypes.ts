@@ -14,6 +14,7 @@ export interface PostRequest {
   };
 }
 export enum responseStatus {
+  NO_ALERT = 0,
   SUCCESS = 200,
   ERR_BAD_REQUEST = 400,
   ERR_UNAUTHORIZED = 401,

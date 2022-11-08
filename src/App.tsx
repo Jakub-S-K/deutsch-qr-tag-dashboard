@@ -30,7 +30,7 @@ const getToken = async ({ username, password }: Credentials) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    loader: () => loader({ path: "api/users" }),
+    loader: () => validate({}),
     element: <Main />,
   },
   {
@@ -58,7 +58,7 @@ function App() {
   return (
     <AlertContext.Provider value={useValue()}>
       <div className="content container">
-        <Alert>Witaaaj</Alert>
+        <Alert></Alert>
         <RouterProvider router={router} />
       </div>
     </AlertContext.Provider>

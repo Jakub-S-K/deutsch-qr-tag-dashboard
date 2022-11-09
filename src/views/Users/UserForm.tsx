@@ -61,6 +61,9 @@ export const UserForm = () => {
       {userModify ? (
         <Button
           color="primary"
+          disabled={
+            user.name === userData.name && user.surname === userData.surname
+          }
           onClick={async () =>
             setStatus(
               await patchRequest({
@@ -76,6 +79,7 @@ export const UserForm = () => {
         <Button
           color="success"
           outline
+          disabled={user.name.length === 0 || user.surname.length === 0}
           onClick={async () =>
             setStatus(
               await postRequest({

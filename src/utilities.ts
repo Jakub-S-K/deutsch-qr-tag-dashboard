@@ -136,26 +136,35 @@ export const validate = async ({
       return response.status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return responseStatus.ERR_UNAUTHORIZED;
+        return error.response?.status;
       } else {
         console.log(error);
       }
     }
   }
 };
-const getToken = async ({ username, password }: Credentials) => {
-  const response = await axios.post(
-    `${process.env.REACT_APP_URL}/api/login`,
-    { username: username, password: password },
-    {
-      headers: {
-        "content-type": "application/json",
-      },
+export const getToken = async ({ username, password }: Credentials) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_URL}/api/login`,
+      { username: username, password: password },
+      {
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    console.log(response);
+    if (typeof response.data.token !== "undefined") {
+      localStorage.setItem("token", response.data.token);
+      return response.status;
     }
-  );
-  if (typeof response.data.token !== "undefined") {
-    localStorage.setItem("token", response.data.token);
-    return responseStatus.SUCCESS;
+    return response.status;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return error.response?.status;
+    } else {
+      console.log(error);
+    }
   }
-  return responseStatus.ERR_UNAUTHORIZED;
 };

@@ -20,9 +20,24 @@ export const Login = () => {
     }
   }, []);
   return (
-    <div
+    <form
       className="container d-flex flex-column justify-content-center align-items-center border rounded p-5"
       style={{ minWidth: "20vw", minHeight: "50vh" }}
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const status = await getToken({ username, password });
+        if (status === responseStatus.SUCCESS) {
+          alert.alertAndDismiss(responseStatus.SUCCESS);
+          navigate("/");
+        } else {
+          if (status === responseStatus.ERR_BAD_REQUEST) {
+            alert.alertAndDismiss(responseStatus.ERR_BAD_REQUEST);
+          }
+          if (status === responseStatus.ERR_NOT_FOUND) {
+            alert.alertAndDismiss(responseStatus.ERR_NOT_FOUND);
+          }
+        }
+      }}
     >
       <h3 className="mb-5">Log in to continue</h3>
       <InputGroup className="my-2">
@@ -50,26 +65,13 @@ export const Login = () => {
         />
       </InputGroup>
       <Button
+        type="submit"
         color="primary"
         className="px-5 mt-5"
         disabled={username.length === 0 || password.length === 0}
-        onClick={async () => {
-          const status = await getToken({ username, password });
-          if (status === responseStatus.SUCCESS) {
-            alert.alertAndDismiss(responseStatus.SUCCESS);
-            navigate("/");
-          } else {
-            if (status === responseStatus.ERR_BAD_REQUEST) {
-              alert.alertAndDismiss(responseStatus.ERR_BAD_REQUEST);
-            }
-            if (status === responseStatus.ERR_NOT_FOUND) {
-              alert.alertAndDismiss(responseStatus.ERR_NOT_FOUND);
-            }
-          }
-        }}
       >
         Log in
       </Button>
-    </div>
+    </form>
   );
 };

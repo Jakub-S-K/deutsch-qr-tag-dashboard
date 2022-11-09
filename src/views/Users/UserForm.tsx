@@ -64,14 +64,16 @@ export const UserForm = () => {
           disabled={
             user.name === userData.name && user.surname === userData.surname
           }
-          onClick={async () =>
+          onClick={async () => {
             setStatus(
               await patchRequest({
                 path: `api/user/${user._id}`,
                 payload: { name: user.name, surname: user.surname },
               })
-            )
-          }
+            );
+            userData.name = user.name;
+            userData.surname = user.surname;
+          }}
         >
           Zapisz
         </Button>

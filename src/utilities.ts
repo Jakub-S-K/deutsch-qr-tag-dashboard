@@ -41,11 +41,17 @@ export const deleteRequest = async ({ path }: { path: string }) => {
         },
       }
     );
-    return response.status;
+    return responseStatus.SUCCESS;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error);
-      return responseStatus.ERR_UNAUTHORIZED;
+      if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
+        return responseStatus.ERR_UNAUTHORIZED;
+      }
+      if (error.response?.status === responseStatus.ERR_NOT_FOUND) {
+        return responseStatus.ERR_NOT_FOUND;
+      }
+      return responseStatus.ERR_INTERNAL;
     } else {
       console.log(error);
     }

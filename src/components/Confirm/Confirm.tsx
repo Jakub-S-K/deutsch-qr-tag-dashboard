@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { mdiArrowLeft } from "@mdi/js";
-import Icon from "@mdi/react";
-import { useNavigate } from "react-router-dom";
 import { deleteRequest } from "../../utilities";
-import { User } from "../../backendTypes";
+import { responseStatus, User } from "../../backendTypes";
+import { AlertContext } from "../../contexts";
 
 type ConfirmProps = {
   isOpen: boolean;
@@ -23,6 +21,7 @@ export const Confirm = ({
   _id,
   deleteUser,
 }: ConfirmProps) => {
+  const alert = useContext(AlertContext);
   return (
     <Modal isOpen={isOpen}>
       <ModalHeader>Usuń użytkownika</ModalHeader>
@@ -36,10 +35,13 @@ export const Confirm = ({
         </Button>
         <Button
           color="danger"
-          onClick={() => {
-            deleteRequest({ path: `api/user/${_id}` });
-            toggle();
-            deleteUser(_id);
+          onClick={async () => {
+            const status = await deleteRequest({ path: `api/user/${_id}` });
+            if (status === responseStatus.SUCCESS) {
+              alert.alertAndDismiss(status);
+              toggle();
+              deleteUser(_id);
+            }
           }}
         >
           Usuń

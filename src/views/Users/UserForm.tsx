@@ -2,9 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { Alert, Button, Input, Label } from "reactstrap";
 import { patchRequest, postRequest } from "../../utilities";
 import { Retreat } from "../../components/Retreat/Retreat";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { responseStatus } from "../../backendTypes";
 
 export const UserForm = () => {
+  const navigate = useNavigate();
   let userData: any = useLoaderData();
   let userModify = true;
   if (!userData) {
@@ -23,14 +25,14 @@ export const UserForm = () => {
     setUser({ ...user, [property]: value });
   };
   const modifyUserAction = async () => {
-    setStatus(
-      await patchRequest({
-        path: `api/user/${user._id}`,
-        payload: { name: user.name, surname: user.surname },
-      })
-    );
-    userData.name = user.name;
-    userData.surname = user.surname;
+    const status = await patchRequest({
+      path: `api/user/${user._id}`,
+      payload: { name: user.name, surname: user.surname },
+    });
+    setStatus(status);
+    if (status === responseStatus.SUCCESS) {
+      navigate(-1);
+    }
   };
   const addUserAction = async () => {
     setStatus(

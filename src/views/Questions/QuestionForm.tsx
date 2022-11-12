@@ -6,16 +6,25 @@ import { useNavigate } from "react-router-dom";
 export const QuestionForm = () => {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<string[]>([]);
+  const [newAnswer, setNewAnswer] = useState<string>("");
   const appendAnswer = (answer: string) => {
     setAnswers([...answers, answer]);
+    setNewAnswer("");
     answerRef.current!.value = "";
+  };
+  const handleAnswerChange = (e: any, index: number) => {
+    const arr = Array.from(answers);
+    arr[index] = e.target.value;
+    setAnswers([...arr]);
   };
   const removeAnswer = (index: number) => {
     setAnswers([...answers.filter((_, ind) => ind !== index)]);
   };
   const handleEnterPress = (e: any) => {
     if (e.keyCode === 13 || e.which === 13) {
-      appendAnswer(e.currentTarget.value);
+      if (e.currentTarget.value.length > 0) {
+        appendAnswer(e.currentTarget.value);
+      }
     }
   };
   const answerRef = useRef<HTMLInputElement>(null);
@@ -53,6 +62,7 @@ export const QuestionForm = () => {
                       e.currentTarget.value.length
                     )
                   }
+                  onChange={(e) => handleAnswerChange(e, index)}
                   value={answer}
                   className="mx-2"
                 ></Input>
@@ -82,14 +92,18 @@ export const QuestionForm = () => {
               }
               onKeyDown={(e) => handleEnterPress(e)}
               className="mx-2"
+              onChange={(e) => {
+                setNewAnswer(e.currentTarget.value);
+              }}
               innerRef={answerRef}
             ></Input>
             <Button
               color="success"
               outline
               onClick={() => {
-                appendAnswer(answerRef.current!.value);
+                appendAnswer(newAnswer);
               }}
+              disabled={newAnswer.length === 0}
               style={{ width: "38px", height: "38px" }}
               className="text-center"
             >

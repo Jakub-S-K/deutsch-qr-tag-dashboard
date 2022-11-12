@@ -73,7 +73,11 @@ export const Main = () => {
         <Button color="warning" outline className="px-5 mx-3">
           Manage
         </Button>
-        <Button color="success" className="px-5 mx-3">
+        <Button
+          color="success"
+          className="px-5 mx-3"
+          onClick={() => navigate("/add/question")}
+        >
           Add question
         </Button>
       </div>

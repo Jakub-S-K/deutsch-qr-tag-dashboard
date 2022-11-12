@@ -33,7 +33,7 @@ export const Users = () => {
     setUserData([...userData.filter((user: User) => user._id !== id)]);
   };
   return (
-    <div className="row">
+    <div className="row py-3">
       <Confirm
         isOpen={modal.isOpen}
         toggle={() => toggleModal()}
@@ -87,6 +87,9 @@ export const Users = () => {
           ))}
         </tbody>
       </Table>
+      <Button color="success" onClick={() => navigate("/add/user")} outline>
+        Dodaj użytkownika
+      </Button>
     </div>
   );
 };

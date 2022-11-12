@@ -8,9 +8,15 @@ export const QuestionForm = () => {
   const [answers, setAnswers] = useState<string[]>([]);
   const appendAnswer = (answer: string) => {
     setAnswers([...answers, answer]);
+    answerRef.current!.value = "";
   };
   const removeAnswer = (index: number) => {
     setAnswers([...answers.filter((_, ind) => ind !== index)]);
+  };
+  const handleEnterPress = (e: any) => {
+    if (e.keyCode === 13 || e.which === 13) {
+      appendAnswer(e.currentTarget.value);
+    }
   };
   const answerRef = useRef<HTMLInputElement>(null);
   return (
@@ -74,6 +80,7 @@ export const QuestionForm = () => {
                   e.currentTarget.value.length
                 )
               }
+              onKeyDown={(e) => handleEnterPress(e)}
               className="mx-2"
               innerRef={answerRef}
             ></Input>

@@ -9,6 +9,9 @@ export const QuestionForm = () => {
   const appendAnswer = (answer: string) => {
     setAnswers([...answers, answer]);
   };
+  const removeAnswer = (index: number) => {
+    setAnswers([...answers.filter((_, ind) => ind !== index)]);
+  };
   const answerRef = useRef<HTMLInputElement>(null);
   return (
     <>
@@ -34,7 +37,7 @@ export const QuestionForm = () => {
           <hr></hr>
           {answers.map((answer, index) => {
             return (
-              <>
+              <div className="d-flex flex-row py-2">
                 <Label for={`answer${index + 1}`}>{index + 1}</Label>
                 <Input
                   id={`answer${index + 1}`}
@@ -45,12 +48,23 @@ export const QuestionForm = () => {
                     )
                   }
                   value={answer}
-                  className="mb-2"
+                  className="mx-2"
                 ></Input>
-              </>
+                <Button
+                  color="danger"
+                  outline
+                  onClick={() => {
+                    removeAnswer(index);
+                  }}
+                  style={{ width: "38px", height: "38px" }}
+                  className="text-center"
+                >
+                  -
+                </Button>
+              </div>
             );
           })}
-          <div className="d-flex flex-row">
+          <div className="d-flex flex-row py-2">
             <Label for="answerx">{answers.length + 1}</Label>
             <Input
               id="answerx"
@@ -60,8 +74,8 @@ export const QuestionForm = () => {
                   e.currentTarget.value.length
                 )
               }
+              className="mx-2"
               innerRef={answerRef}
-              className="mb-2"
             ></Input>
             <Button
               color="success"
@@ -69,19 +83,23 @@ export const QuestionForm = () => {
               onClick={() => {
                 appendAnswer(answerRef.current!.value);
               }}
+              style={{ width: "38px", height: "38px" }}
+              className="text-center"
             >
               +
             </Button>
           </div>
-          <Button
-            color="success"
-            outline
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            Dodaj pytanie
-          </Button>
+          <div className="my-3 row">
+            <Button
+              color="success"
+              outline
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              Dodaj pytanie
+            </Button>
+          </div>
         </>
       </form>
     </>

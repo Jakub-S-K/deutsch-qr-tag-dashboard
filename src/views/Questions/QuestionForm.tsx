@@ -46,6 +46,7 @@ export const QuestionForm = () => {
                 e.currentTarget.value.length
               )
             }
+            required
             autoFocus
           ></Input>
           <h5 className="mt-3">Odpowiedzi</h5>
@@ -65,6 +66,7 @@ export const QuestionForm = () => {
                   onChange={(e) => handleAnswerChange(e, index)}
                   value={answer}
                   className="mx-2"
+                  required
                 ></Input>
                 <Button
                   color="danger"
@@ -113,9 +115,10 @@ export const QuestionForm = () => {
           <div className="my-3 row">
             <Button
               color="success"
+              type="submit"
               outline
               onClick={() => {
-                navigate(-1);
+                //navigate(-1);
               }}
             >
               Dodaj pytanie

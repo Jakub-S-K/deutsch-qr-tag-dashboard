@@ -122,7 +122,6 @@ export const validate = async ({
   requestType?: "GET" | "POST";
 }) => {
   if (!localStorage.getItem("token")) {
-    localStorage.setItem("token", "");
     return responseStatus.ERR_UNAUTHORIZED;
   }
   if (requestType === "GET") {
@@ -137,11 +136,15 @@ export const validate = async ({
         }
       );
       if (response.status === responseStatus.ERR_UNAUTHORIZED) {
+        localStorage.removeItem("token");
         return responseStatus.ERR_UNAUTHORIZED;
       }
       return response.status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
+          localStorage.removeItem("token");
+        }
         return error.response?.status;
       } else {
         console.log(error);

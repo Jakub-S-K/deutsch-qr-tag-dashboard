@@ -7,6 +7,12 @@ export interface User {
   name: string;
   surname: string;
 }
+export interface Question {
+  _id: string;
+  question: string;
+  answers: string[];
+  answer: number[];
+}
 export interface PostRequest {
   status: number;
   data: {

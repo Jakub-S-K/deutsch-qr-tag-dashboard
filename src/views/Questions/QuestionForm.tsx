@@ -2,9 +2,11 @@ import React, { useState, useRef } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate } from "react-router-dom";
+import { postRequest } from "../../utilities";
 
 export const QuestionForm = () => {
   const navigate = useNavigate();
+  const [question, setQuestion] = useState<string>("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [newAnswer, setNewAnswer] = useState<string>("");
   const appendAnswer = (answer: string) => {
@@ -34,6 +36,14 @@ export const QuestionForm = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          postRequest({
+            path: "api/question",
+            payload: {
+              question: question,
+              answers: [...answers],
+              answer: [0, 2],
+            },
+          });
         }}
       >
         <>
@@ -46,6 +56,7 @@ export const QuestionForm = () => {
                 e.currentTarget.value.length
               )
             }
+            onChange={(e) => setQuestion(e.currentTarget.value)}
             required
             autoFocus
           ></Input>

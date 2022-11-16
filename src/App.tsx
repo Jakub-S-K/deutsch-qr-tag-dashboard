@@ -9,6 +9,7 @@ import { UserForm } from "./views/Users/UserForm";
 import { Alert } from "./components/Alert/Alert";
 import { AlertContext, useValue } from "./contexts";
 import { QuestionForm } from "./views/Questions/QuestionForm";
+import { Questions } from "./views/Questions/Questions";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
     path: "/users",
     loader: () => loader({ path: "api/users" }),
     element: <UsersPage />,
+  },
+  {
+    path: "/questions",
+    loader: () => loader({ path: "api/questions" }),
+    element: <Questions />,
   },
   {
     path: "/users/:id",

@@ -1,22 +1,36 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate } from "react-router-dom";
 import { postRequest } from "../../utilities";
 
+interface answer {
+  content: string;
+  isCorrect: boolean;
+}
+
 export const QuestionForm = () => {
   const navigate = useNavigate();
   const [question, setQuestion] = useState<string>("");
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<answer[]>([]);
   const [newAnswer, setNewAnswer] = useState<string>("");
-  const appendAnswer = (answer: string) => {
-    setAnswers([...answers, answer]);
+  const appendAnswer = (answerContent: string) => {
+    setAnswers([...answers, { content: answerContent, isCorrect: false }]);
     setNewAnswer("");
     answerRef.current!.value = "";
   };
-  const handleAnswerChange = (e: any, index: number) => {
+  const handleAnswerChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number,
+    target: "checkbox" | "text"
+  ) => {
     const arr = Array.from(answers);
-    arr[index] = e.target.value;
+    if (target === "text") {
+      arr[index].content = e.target.value;
+    }
+    if (target === "checkbox") {
+      arr[index].isCorrect = e.target.checked;
+    }
     setAnswers([...arr]);
   };
   const removeAnswer = (index: number) => {
@@ -41,8 +55,17 @@ export const QuestionForm = () => {
             path: "api/question",
             payload: {
               question: question,
-              answers: [...answers],
-              answer: [0, 2],
+              answers: [...answers.map((answer) => answer.content)],
+              answer: [
+                ...answers
+                  .map((answer, index) => {
+                    if (answer.isCorrect) {
+                      return index;
+                    }
+                    return null;
+                  })
+                  .filter((value) => value != null),
+              ],
             },
           });
         }}
@@ -66,6 +89,11 @@ export const QuestionForm = () => {
           {answers.map((answer, index) => {
             return (
               <div className="d-flex flex-row py-2">
+                <Input
+                  type="checkbox"
+                  onChange={(e) => handleAnswerChange(e, index, "checkbox")}
+                  checked={answer.isCorrect}
+                />
                 <Label for={`answer${index + 1}`}>{index + 1}</Label>
                 <Input
                   id={`answer${index + 1}`}
@@ -75,8 +103,8 @@ export const QuestionForm = () => {
                       e.currentTarget.value.length
                     )
                   }
-                  onChange={(e) => handleAnswerChange(e, index)}
-                  value={answer}
+                  onChange={(e) => handleAnswerChange(e, index, "text")}
+                  value={answer.content}
                   className="mx-2"
                   required
                 ></Input>

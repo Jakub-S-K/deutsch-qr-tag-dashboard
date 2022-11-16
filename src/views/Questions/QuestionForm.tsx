@@ -23,7 +23,8 @@ export const QuestionForm = () => {
     setAnswers([...answers.filter((_, ind) => ind !== index)]);
   };
   const handleEnterPress = (e: any) => {
-    if (e.keyCode === 13 || e.which === 13) {
+    if (e.key === "Tab") {
+      e.preventDefault();
       if (e.currentTarget.value.length > 0) {
         appendAnswer(e.currentTarget.value);
       }
@@ -34,7 +35,7 @@ export const QuestionForm = () => {
     <>
       <Retreat />
       <form
-        onSubmit={async (e) => {
+        onSubmit={async (e: any) => {
           e.preventDefault();
           postRequest({
             path: "api/question",

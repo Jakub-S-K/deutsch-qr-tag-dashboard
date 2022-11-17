@@ -23,11 +23,6 @@ const router = createBrowserRouter([
     element: <UsersPage />,
   },
   {
-    path: "/questions",
-    loader: () => loader({ path: "api/questions" }),
-    element: <Questions />,
-  },
-  {
     path: "/users/:id",
     loader: ({ params }) => loader({ path: `api/user/${params.id}` }),
     element: <UserForm />,
@@ -35,6 +30,16 @@ const router = createBrowserRouter([
   {
     path: "/add/user",
     element: <UserForm />,
+  },
+  {
+    path: "/questions",
+    loader: () => loader({ path: "api/questions" }),
+    element: <Questions />,
+  },
+  {
+    path: "/questions/:id",
+    loader: ({ params }) => loader({ path: `api/question/${params.id}` }),
+    element: <QuestionForm />,
   },
   {
     path: "/add/question",

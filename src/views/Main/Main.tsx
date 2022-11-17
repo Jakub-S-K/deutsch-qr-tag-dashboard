@@ -70,7 +70,12 @@ export const Main = () => {
       <h3>Questions management</h3>
       <hr className="vertical-line" />
       <div className="d-flex flex-row justify-content-between">
-        <Button color="warning" outline className="px-5 mx-3">
+        <Button
+          color="warning"
+          outline
+          className="px-5 mx-3"
+          onClick={() => navigate("/questions")}
+        >
           Manage
         </Button>
         <Button

@@ -1,9 +1,9 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
-import { useNavigate, useLoaderData } from "react-router-dom";
-import { postRequest } from "../../utilities";
-import { Question } from "../../backendTypes";
+import { useNavigate, useLoaderData, useParams } from "react-router-dom";
+import { postRequest, patchRequest } from "../../utilities";
+import { payloadQuestion, Question } from "../../backendTypes";
 
 interface answer {
   content: string;
@@ -21,15 +21,14 @@ export const QuestionForm = () => {
       "question" in data
     );
   };
+  const { id } = useParams();
   const navigate = useNavigate();
-  const modify = useRef(false);
-  const loaderData: any = useLoaderData();
+  const modify = useRef<boolean>(false);
+  const loaderData: unknown = useLoaderData();
   const [question, setQuestion] = useState<string>("");
   const [answers, setAnswers] = useState<answer[]>([]);
   const [newAnswer, setNewAnswer] = useState<string>("");
   useEffect(() => {
-    console.log(modify);
-    modify.current = false;
     if (isQuestion(loaderData)) {
       modify.current = true;
       setQuestion(loaderData.question);
@@ -73,6 +72,12 @@ export const QuestionForm = () => {
       }
     }
   };
+  const compareArrays = (arr1: Array<any>, arr2: Array<any>) => {
+    const areEqual = arr1.every((elem) => {
+      return arr2.includes(elem);
+    });
+    return areEqual;
+  };
   const answerRef = useRef<HTMLInputElement>(null);
   return (
     <>
@@ -80,23 +85,52 @@ export const QuestionForm = () => {
       <form
         onSubmit={async (e: any) => {
           e.preventDefault();
-          postRequest({
-            path: "api/question",
-            payload: {
-              question: question,
-              answers: [...answers.map((answer) => answer.content)],
-              answer: [
-                ...answers
-                  .map((answer, index) => {
-                    if (answer.isCorrect) {
-                      return index;
-                    }
-                    return null;
-                  })
-                  .filter((value) => value != null),
-              ],
-            },
-          });
+          if (modify.current && isQuestion(loaderData)) {
+            const answersToFetch = [...answers.map((answer) => answer.content)];
+            const payload: Partial<payloadQuestion> = {};
+            const correctAnswersToFetch = [
+              ...answers
+                .map((answer: answer, index: number) => {
+                  if (answer.isCorrect) {
+                    return index;
+                  }
+                  return -1;
+                })
+                .filter((value) => value !== null && value !== -1),
+            ];
+            if (question !== loaderData.question) {
+              payload.question = question;
+            }
+            if (!compareArrays(answersToFetch, loaderData.answers)) {
+              payload.answers = answersToFetch;
+            }
+            if (!compareArrays(correctAnswersToFetch, loaderData.answer)) {
+              payload.answer = correctAnswersToFetch;
+            }
+            console.log(payload);
+            patchRequest({
+              path: `api/question/${id}`,
+              payload: payload,
+            });
+          } else {
+            postRequest({
+              path: "api/question",
+              payload: {
+                question: question,
+                answers: [...answers.map((answer) => answer.content)],
+                answer: [
+                  ...answers
+                    .map((answer, index) => {
+                      if (answer.isCorrect) {
+                        return index;
+                      }
+                      return null;
+                    })
+                    .filter((value) => value != null),
+                ],
+              },
+            });
+          }
         }}
       >
         <>

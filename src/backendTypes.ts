@@ -7,11 +7,13 @@ export interface User {
   name: string;
   surname: string;
 }
-export interface Question {
-  _id: string;
+export interface payloadQuestion {
   question: string;
   answers: string[];
   answer: number[];
+}
+export interface Question extends payloadQuestion {
+  _id: string;
 }
 export interface PostRequest {
   status: number;

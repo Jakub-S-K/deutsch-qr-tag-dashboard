@@ -1,8 +1,9 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLoaderData } from "react-router-dom";
 import { postRequest } from "../../utilities";
+import { Question } from "../../backendTypes";
 
 interface answer {
   content: string;
@@ -10,10 +11,38 @@ interface answer {
 }
 
 export const QuestionForm = () => {
+  const isQuestion = (data: unknown): data is Question => {
+    return (
+      typeof data === "object" &&
+      data !== null &&
+      data !== undefined &&
+      "answer" in data &&
+      "answers" in data &&
+      "question" in data
+    );
+  };
   const navigate = useNavigate();
+  const modify = useRef(false);
+  const loaderData: any = useLoaderData();
   const [question, setQuestion] = useState<string>("");
   const [answers, setAnswers] = useState<answer[]>([]);
   const [newAnswer, setNewAnswer] = useState<string>("");
+  useEffect(() => {
+    console.log(modify);
+    modify.current = false;
+    if (isQuestion(loaderData)) {
+      modify.current = true;
+      setQuestion(loaderData.question);
+      setAnswers([
+        ...loaderData.answers.map((value: string, index: number) => {
+          if (loaderData.answer.includes(index)) {
+            return { content: value, isCorrect: true };
+          }
+          return { content: value, isCorrect: false };
+        }),
+      ]);
+    }
+  }, []);
   const appendAnswer = (answerContent: string) => {
     setAnswers([...answers, { content: answerContent, isCorrect: false }]);
     setNewAnswer("");
@@ -81,6 +110,7 @@ export const QuestionForm = () => {
               )
             }
             onChange={(e) => setQuestion(e.currentTarget.value)}
+            value={question}
             required
             autoFocus
           ></Input>
@@ -152,18 +182,32 @@ export const QuestionForm = () => {
               +
             </Button>
           </div>
-          <div className="my-3 row">
-            <Button
-              color="success"
-              type="submit"
-              outline
-              onClick={() => {
-                //navigate(-1);
-              }}
-            >
-              Dodaj pytanie
-            </Button>
-          </div>
+          {modify.current ? (
+            <div className="my-3 row">
+              <Button
+                color="primary"
+                type="submit"
+                onClick={() => {
+                  //navigate(-1);
+                }}
+              >
+                Zapisz
+              </Button>
+            </div>
+          ) : (
+            <div className="my-3 row">
+              <Button
+                color="success"
+                type="submit"
+                outline
+                onClick={() => {
+                  //navigate(-1);
+                }}
+              >
+                Dodaj pytanie
+              </Button>
+            </div>
+          )}
         </>
       </form>
     </>

@@ -10,8 +10,13 @@ import { Alert } from "./components/Alert/Alert";
 import { AlertContext, useValue } from "./contexts";
 import { QuestionForm } from "./views/Questions/QuestionForm";
 import { Questions } from "./views/Questions/Questions";
+import { NotFound } from "./views/NotFound";
 
 const router = createBrowserRouter([
+  {
+    path: "*",
+    element: <NotFound />,
+  },
   {
     path: "/",
     loader: () => validate({}),

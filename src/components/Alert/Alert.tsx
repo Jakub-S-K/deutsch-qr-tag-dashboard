@@ -30,10 +30,17 @@ export const Alert = ({
   return (
     <Toast
       role={"alert"}
-      className={cx("text-white", {
-        "bg-success": value.alert === responseStatus.SUCCESS,
-        "bg-danger": value.alert >= 400,
-      })}
+      className={cx(
+        "text-white",
+        "position-fixed",
+        "p-3",
+        "d-flex justify-content-between",
+        {
+          "bg-success": value.alert === responseStatus.SUCCESS,
+          "bg-danger": value.alert >= 400,
+        }
+      )}
+      style={{ top: "15px", right: "15px" }}
       isOpen={value.alert !== responseStatus.NO_ALERT}
     >
       <>

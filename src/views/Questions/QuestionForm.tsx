@@ -1,9 +1,16 @@
-import React, { useState, useRef, ChangeEvent, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  ChangeEvent,
+  useEffect,
+  useContext,
+} from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import { postRequest, patchRequest } from "../../utilities";
-import { payloadQuestion, Question } from "../../backendTypes";
+import { payloadQuestion, Question, responseStatus } from "../../backendTypes";
+import { AlertContext } from "../../contexts";
 
 interface answer {
   content: string;
@@ -23,6 +30,7 @@ export const QuestionForm = () => {
   };
   const { id } = useParams();
   const navigate = useNavigate();
+  const alert = useContext(AlertContext);
   const modify = useRef<boolean>(false);
   const loaderData: unknown = useLoaderData();
   const [question, setQuestion] = useState<string>("");
@@ -85,19 +93,19 @@ export const QuestionForm = () => {
       <form
         onSubmit={async (e: any) => {
           e.preventDefault();
+          const answersToFetch = [...answers.map((answer) => answer.content)];
+          const payload: Partial<payloadQuestion> = {};
+          const correctAnswersToFetch = [
+            ...answers
+              .map((answer: answer, index: number) => {
+                if (answer.isCorrect) {
+                  return index;
+                }
+                return -1;
+              })
+              .filter((value) => value !== null && value !== -1),
+          ];
           if (modify.current && isQuestion(loaderData)) {
-            const answersToFetch = [...answers.map((answer) => answer.content)];
-            const payload: Partial<payloadQuestion> = {};
-            const correctAnswersToFetch = [
-              ...answers
-                .map((answer: answer, index: number) => {
-                  if (answer.isCorrect) {
-                    return index;
-                  }
-                  return -1;
-                })
-                .filter((value) => value !== null && value !== -1),
-            ];
             if (question !== loaderData.question) {
               payload.question = question;
             }
@@ -107,27 +115,23 @@ export const QuestionForm = () => {
             if (!compareArrays(correctAnswersToFetch, loaderData.answer)) {
               payload.answer = correctAnswersToFetch;
             }
-            console.log(payload);
-            patchRequest({
-              path: `api/question/${id}`,
-              payload: payload,
-            });
+            if (Object.keys(payload).length > 0) {
+              const res: any = await patchRequest({
+                path: `api/question/${id}`,
+                payload: payload,
+              });
+              alert.alertAndDismiss(res);
+              navigate(-1);
+            } else {
+              alert.alertAndDismiss(responseStatus.ERR_ALREADY_EXISTS);
+            }
           } else {
             postRequest({
               path: "api/question",
               payload: {
                 question: question,
-                answers: [...answers.map((answer) => answer.content)],
-                answer: [
-                  ...answers
-                    .map((answer, index) => {
-                      if (answer.isCorrect) {
-                        return index;
-                      }
-                      return null;
-                    })
-                    .filter((value) => value != null),
-                ],
+                answers: answersToFetch,
+                answer: correctAnswersToFetch,
               },
             });
           }
@@ -218,13 +222,7 @@ export const QuestionForm = () => {
           </div>
           {modify.current ? (
             <div className="my-3 row">
-              <Button
-                color="primary"
-                type="submit"
-                onClick={() => {
-                  //navigate(-1);
-                }}
-              >
+              <Button color="primary" type="submit">
                 Zapisz
               </Button>
             </div>

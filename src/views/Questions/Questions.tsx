@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
-import { Question } from "../../backendTypes";
+import { Question, responseStatus } from "../../backendTypes";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Confirm } from "../../components/Confirm/Confirm";
+import { AlertContext } from "../../contexts";
 
 type ModalProps = {
   isOpen: boolean;
@@ -15,6 +16,7 @@ type ModalProps = {
 
 export const Questions = () => {
   const names = ["id", "Pytanie", "Akcje"];
+  const alert = useContext(AlertContext);
   const [modal, setModal] = useState<ModalProps>({
     isOpen: false,
     name: "",
@@ -34,6 +36,15 @@ export const Questions = () => {
       ...questionData.filter((question: Question) => question._id !== id),
     ]);
   };
+  useEffect(() => {
+    if (questionData === responseStatus.ERR_UNAUTHORIZED) {
+      alert.alertAndDismiss(responseStatus.ERR_UNAUTHORIZED);
+      navigate("/login");
+    }
+  }, []);
+  if (typeof questionData !== "object") {
+    return <div></div>;
+  }
   return (
     <div className="row py-3">
       <Confirm

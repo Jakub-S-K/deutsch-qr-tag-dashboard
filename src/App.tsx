@@ -11,6 +11,7 @@ import { AlertContext, useValue } from "./contexts";
 import { QuestionForm } from "./views/Questions/QuestionForm";
 import { Questions } from "./views/Questions/Questions";
 import { NotFound } from "./views/NotFound";
+import { Protected } from "./components/Protected/Protected";
 
 const router = createBrowserRouter([
   {
@@ -18,42 +19,48 @@ const router = createBrowserRouter([
     element: <NotFound />,
   },
   {
-    path: "/",
-    loader: () => validate({}),
-    element: <Main />,
-  },
-  {
-    path: "/users",
-    loader: () => loader({ path: "api/users" }),
-    element: <UsersPage />,
-  },
-  {
-    path: "/users/:id",
-    loader: ({ params }) => loader({ path: `api/user/${params.id}` }),
-    element: <UserForm />,
-  },
-  {
-    path: "/add/user",
-    element: <UserForm />,
-  },
-  {
-    path: "/questions",
-    loader: () => loader({ path: "api/questions" }),
-    element: <Questions />,
-  },
-  {
-    path: "/questions/:id",
-    loader: ({ params }) => loader({ path: `api/question/${params.id}` }),
-    element: <QuestionForm />,
-  },
-  {
-    path: "/add/question",
-    element: <QuestionForm />,
-  },
-  {
     path: "/login",
     loader: () => validate({}),
     element: <Login />,
+  },
+  {
+    path: "/",
+    element: <Protected />,
+    children: [
+      {
+        path: "/",
+        index: true,
+        element: <Main />,
+      },
+      {
+        path: "users",
+        loader: () => loader({ path: "api/users" }),
+        element: <UsersPage />,
+      },
+      {
+        path: "users/:id",
+        loader: ({ params }) => loader({ path: `api/user/${params.id}` }),
+        element: <UserForm />,
+      },
+      {
+        path: "add/user",
+        element: <UserForm />,
+      },
+      {
+        path: "questions",
+        loader: () => loader({ path: "api/questions" }),
+        element: <Questions />,
+      },
+      {
+        path: "questions/:id",
+        loader: ({ params }) => loader({ path: `api/question/${params.id}` }),
+        element: <QuestionForm />,
+      },
+      {
+        path: "/add/question",
+        element: <QuestionForm />,
+      },
+    ],
   },
 ]);
 

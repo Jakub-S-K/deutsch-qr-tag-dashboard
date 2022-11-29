@@ -16,12 +16,16 @@ export const Protected = () => {
         setRedirect(true);
         navigate("/login");
       } else {
-        const { exp } = jwtDecode<Token>(localStorage.getItem("token")!);
-        if (Date.now() < exp * 1000) {
-          setRedirect(false);
-        } else {
-          setRedirect(true);
-          navigate("/login");
+        try {
+          const { exp } = jwtDecode<Token>(localStorage.getItem("token")!);
+          if (Date.now() < exp * 1000) {
+            setRedirect(false);
+          } else {
+            setRedirect(true);
+            navigate("/login");
+          }
+        } catch (err) {
+          localStorage.removeItem("token");
         }
       }
     };

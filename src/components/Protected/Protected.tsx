@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { AlertContext } from "../../contexts";
+import { responseStatus } from "../../backendTypes";
 
 interface Token {
   id: string;
@@ -8,12 +10,16 @@ interface Token {
   exp: EpochTimeStamp;
 }
 export const Protected = () => {
+  const alert = useContext(AlertContext);
   const [redirect, setRedirect] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     const authCheck = async () => {
       if (!localStorage.getItem("token")) {
         setRedirect(true);
+        alert.alertAndDismiss(responseStatus.ERR_UNAUTHORIZED, {
+          message: "Zaloguj się, aby kontynuować!",
+        });
         navigate("/login");
       } else {
         try {
@@ -22,6 +28,10 @@ export const Protected = () => {
             setRedirect(false);
           } else {
             setRedirect(true);
+            alert.alertAndDismiss(responseStatus.ERR_UNAUTHORIZED, {
+              message: "Sesja wygasła. Zaloguj się ponownie.",
+            });
+            localStorage.removeItem("token");
             navigate("/login");
           }
         } catch (err) {

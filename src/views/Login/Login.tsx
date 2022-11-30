@@ -15,7 +15,9 @@ export const Login = () => {
   const alert = useContext(AlertContext);
   useEffect(() => {
     if (loaderData === responseStatus.SUCCESS) {
-      alert.alertAndDismiss(responseStatus.SUCCESS);
+      alert.alertAndDismiss(responseStatus.SUCCESS, {
+        message: "Zalogowano pomyślnie!",
+      });
       navigate("/");
     }
   }, []);
@@ -27,7 +29,9 @@ export const Login = () => {
         e.preventDefault();
         const status = await getToken({ username, password });
         if (status === responseStatus.SUCCESS) {
-          alert.alertAndDismiss(responseStatus.SUCCESS);
+          alert.alertAndDismiss(responseStatus.SUCCESS, {
+            message: "Zalogowano pomyślnie!",
+          });
           navigate("/");
         } else {
           if (status === responseStatus.ERR_BAD_REQUEST) {

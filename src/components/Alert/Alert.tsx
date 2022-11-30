@@ -3,12 +3,7 @@ import { Toast, CloseButton } from "reactstrap";
 import cx from "classnames";
 import { AlertContext } from "../../contexts";
 import { responseStatus } from "../../backendTypes";
-export const Alert = ({
-  children,
-}: {
-  isOpen?: boolean;
-  children?: string;
-}) => {
+export const Alert = () => {
   const value = useContext(AlertContext);
 
   const getMessage = (status: responseStatus) => {
@@ -44,7 +39,7 @@ export const Alert = ({
       isOpen={value.alert !== responseStatus.NO_ALERT}
     >
       <>
-        {typeof children !== "undefined" ? children : getMessage(value.alert)}
+        {value.message ? value.message : getMessage(value.alert)}
         <CloseButton
           variant="white"
           onClick={() => value.setAlert(responseStatus.NO_ALERT)}

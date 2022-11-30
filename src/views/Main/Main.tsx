@@ -1,22 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiFileDocumentEdit, mdiTrophy } from "@mdi/js";
 import Icon from "@mdi/react";
-import { useNavigate, useLoaderData } from "react-router-dom";
-import { responseStatus } from "../../backendTypes";
-import { AlertContext } from "../../contexts";
+import { useNavigate } from "react-router-dom";
 
 export const Main = () => {
   const navigate = useNavigate();
-  const alert = useContext(AlertContext);
-  const loaderData = useLoaderData();
-  useEffect(() => {
-    console.log(loaderData);
-    if (loaderData === responseStatus.ERR_UNAUTHORIZED) {
-      alert.alertAndDismiss(responseStatus.ERR_UNAUTHORIZED);
-      navigate("/login");
-    }
-  }, []);
   return (
     <>
       <h3 className="">Contest title</h3>

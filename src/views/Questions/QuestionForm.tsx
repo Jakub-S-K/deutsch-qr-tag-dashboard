@@ -73,7 +73,7 @@ export const QuestionForm = () => {
     setAnswers([...answers.filter((_, ind) => ind !== index)]);
   };
   const handleEnterPress = (e: any) => {
-    if (e.key === "Tab") {
+    if (e.keyCode === 13) {
       e.preventDefault();
       if (e.currentTarget.value.length > 0) {
         appendAnswer(e.currentTarget.value);

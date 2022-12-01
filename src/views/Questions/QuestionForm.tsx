@@ -93,6 +93,14 @@ export const QuestionForm = () => {
       <form
         onSubmit={async (e: any) => {
           e.preventDefault();
+          if (answers.length < 2) {
+            alert.alertAndDismiss(responseStatus.ERR_BAD_REQUEST, {
+              message: `Pytanie musi mieć conajmniej 2 odpowiedzi. Dodaj jeszcze ${
+                2 - answers.length
+              }.`,
+            });
+            return null;
+          }
           const answersToFetch = [...answers.map((answer) => answer.content)];
           const payload: Partial<payloadQuestion> = {};
           const correctAnswersToFetch = [
@@ -156,7 +164,7 @@ export const QuestionForm = () => {
           <hr></hr>
           {answers.map((answer, index) => {
             return (
-              <div className="d-flex flex-row py-2">
+              <div className="d-flex flex-row py-2" key={`answer-${index}`}>
                 <Input
                   type="checkbox"
                   onChange={(e) => handleAnswerChange(e, index, "checkbox")}

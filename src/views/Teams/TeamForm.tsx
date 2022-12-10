@@ -56,7 +56,7 @@ export const TeamForm = () => {
     });
     return areEqual;
   };
-  const answerRef = useRef<HTMLInputElement>(null);
+  const answerRef = useRef<HTMLSelectElement>(null);
   return (
     <>
       <Retreat />
@@ -75,7 +75,7 @@ export const TeamForm = () => {
         }}
       >
         <>
-          <Label for="teamNameContent">Treść pytania</Label>
+          <Label for="teamNameContent">Nazwa zespołu</Label>
           <Input
             id="teamNameContent"
             onFocus={(e) =>
@@ -105,6 +105,7 @@ export const TeamForm = () => {
                   }
                   value={member.name + " " + member.surname}
                   className="mx-2"
+                  readOnly
                   required
                 ></Input>
                 <Button
@@ -123,18 +124,11 @@ export const TeamForm = () => {
           })}
           <div className="d-flex flex-row py-2">
             <Label for="memberx">{members.length + 1}</Label>
-            <Input
-              id="memberx"
-              onFocus={(e) =>
-                e.currentTarget.setSelectionRange(
-                  e.currentTarget.value.length,
-                  e.currentTarget.value.length
-                )
-              }
-              onKeyDown={(e) => handleEnterPress(e)}
-              className="mx-2"
-              innerRef={answerRef}
-            ></Input>
+            <select ref={answerRef}>
+              <option value="1234">Jan Kowalski</option>
+              <option value="1235">Adrian Dąbrowski</option>
+              <option value="1245">Adam Frankowski</option>
+            </select>
             <Button
               color="success"
               outline

@@ -9,6 +9,7 @@ import { RouteObject } from "react-router-dom";
 import { loader, validate } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
+import { TeamForm } from "./views/Teams";
 
 export const routes: RouteObject[] = [
   {
@@ -56,6 +57,10 @@ export const routes: RouteObject[] = [
       {
         path: "/add/question",
         element: <QuestionForm />,
+      },
+      {
+        path: "add/team",
+        element: <TeamForm />,
       },
     ],
   },

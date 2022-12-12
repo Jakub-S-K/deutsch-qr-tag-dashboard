@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useContext } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { Button, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Question, responseStatus } from "../../backendTypes";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Confirm } from "../../components/Confirm/Confirm";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 
 type ModalProps = {
   isOpen: boolean;
@@ -16,7 +17,7 @@ type ModalProps = {
 
 export const Questions = () => {
   const names = ["id", "Pytanie", "Akcje"];
-  const alert = useContext(AlertContext);
+  const alert = useAlert();
   const [modal, setModal] = useState<ModalProps>({
     isOpen: false,
     name: "",

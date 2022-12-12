@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { responseStatus } from "./backendTypes";
 
 export const useValue = () => {
@@ -31,3 +31,6 @@ export const useValue = () => {
   };
 };
 export const AlertContext = createContext({} as ReturnType<typeof useValue>);
+export const useAlert = () => {
+  return useContext(AlertContext);
+};

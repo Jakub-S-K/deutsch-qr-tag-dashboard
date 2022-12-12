@@ -1,16 +1,11 @@
-import React, {
-  useState,
-  useRef,
-  ChangeEvent,
-  useEffect,
-  useContext,
-} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import { postRequest, patchRequest } from "../../utilities";
 import { payloadQuestion, Question, responseStatus } from "../../backendTypes";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 
 interface answer {
   content: string;
@@ -30,7 +25,7 @@ export const QuestionForm = () => {
   };
   const { id } = useParams();
   const navigate = useNavigate();
-  const alert = useContext(AlertContext);
+  const alert = useAlert();
   const modify = useRef<boolean>(false);
   const loaderData: unknown = useLoaderData();
   const [question, setQuestion] = useState<string>("");

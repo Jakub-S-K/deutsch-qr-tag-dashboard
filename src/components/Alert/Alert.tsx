@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Toast, CloseButton } from "reactstrap";
 import cx from "classnames";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 import { responseStatus } from "../../backendTypes";
 export const Alert = () => {
-  const value = useContext(AlertContext);
+  const value = useAlert();
 
   const getMessage = (status: responseStatus) => {
     switch (status) {

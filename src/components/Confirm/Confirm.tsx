@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { deleteRequest } from "../../utilities";
 import { responseStatus, User } from "../../backendTypes";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 
 type ConfirmProps = {
   isOpen: boolean;
@@ -21,7 +21,7 @@ export const Confirm = ({
   _id,
   deleteUser,
 }: ConfirmProps) => {
-  const alert = useContext(AlertContext);
+  const alert = useAlert();
   return (
     <Modal isOpen={isOpen}>
       <ModalHeader>Usuń użytkownika</ModalHeader>

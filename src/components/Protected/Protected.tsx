@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 import { responseStatus } from "../../backendTypes";
 
 interface Token {
@@ -10,7 +11,7 @@ interface Token {
   exp: EpochTimeStamp;
 }
 export const Protected = () => {
-  const alert = useContext(AlertContext);
+  const alert = useAlert();
   const [redirect, setRedirect] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {

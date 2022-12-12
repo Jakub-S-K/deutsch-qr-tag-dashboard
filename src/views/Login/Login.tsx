@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiAccount, mdiLock } from "@mdi/js";
 import Icon from "@mdi/react";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 import { responseStatus } from "../../backendTypes";
 import { getToken } from "../../utilities";
 
@@ -12,7 +13,7 @@ export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const loaderData = useLoaderData();
-  const alert = useContext(AlertContext);
+  const alert = useAlert();
   useEffect(() => {
     if (loaderData === responseStatus.SUCCESS) {
       alert.alertAndDismiss(responseStatus.SUCCESS, {

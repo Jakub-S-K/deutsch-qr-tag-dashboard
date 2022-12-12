@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import { postRequest, patchRequest } from "../../utilities";
 import { responseStatus, User } from "../../backendTypes";
-import { AlertContext } from "../../contexts";
+import { useAlert } from "../../contexts";
 
 interface Team {
   name: string;
@@ -23,7 +23,7 @@ export const TeamForm = () => {
   };
   const { id } = useParams();
   const navigate = useNavigate();
-  const alert = useContext(AlertContext);
+  const alert = useAlert();
   const modify = useRef<boolean>(false);
   const loaderData: unknown = useLoaderData();
   const [teamName, setTeamName] = useState<string>("");

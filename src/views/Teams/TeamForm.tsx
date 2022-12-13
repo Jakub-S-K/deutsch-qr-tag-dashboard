@@ -5,6 +5,7 @@ import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import { postRequest, patchRequest } from "../../utilities";
 import { responseStatus, User } from "../../backendTypes";
 import { useAlert } from "../../contexts";
+import userEvent from "@testing-library/user-event";
 
 interface Team {
   name: string;
@@ -28,6 +29,11 @@ export const TeamForm = () => {
   const loaderData: unknown = useLoaderData();
   const [teamName, setTeamName] = useState<string>("");
   const [members, setMembers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>(() => [
+    { _id: "1234", name: "Jan", surname: "Kowalski" },
+    { _id: "1235", name: "Adam", surname: "Nawrocki" },
+    { _id: "1245", name: "Kacper", surname: "Wrocławski" },
+  ]);
   useEffect(() => {
     if (isTeam(loaderData)) {
       modify.current = true;
@@ -37,10 +43,16 @@ export const TeamForm = () => {
   }, []);
   const appendMember = (user: User) => {
     setMembers([...members, user]);
-    answerRef.current!.value = "";
+    answerRef.current!.value = "-1";
   };
   const removeMember = (index: number) => {
     setMembers([...members.filter((_, ind) => ind !== index)]);
+  };
+  const appendUser = (user: User) => {
+    setUsers([...users, user]);
+  };
+  const removeUser = (id: string) => {
+    setUsers([...users.filter((user) => user._id !== id)]);
   };
   const handleEnterPress = (e: any) => {
     if (e.keyCode === 13) {
@@ -112,6 +124,7 @@ export const TeamForm = () => {
                   color="danger"
                   outline
                   onClick={() => {
+                    appendUser(member);
                     removeMember(index);
                   }}
                   style={{ width: "38px", height: "38px" }}
@@ -124,19 +137,42 @@ export const TeamForm = () => {
           })}
           <div className="d-flex flex-row py-2">
             <Label for="memberx">{members.length + 1}</Label>
-            <select ref={answerRef}>
-              <option value="1234">Jan Kowalski</option>
-              <option value="1235">Adrian Dąbrowski</option>
-              <option value="1245">Adam Frankowski</option>
+            <select
+              ref={answerRef}
+              defaultValue="-1"
+              className="mx-2"
+              disabled={users.length === 0}
+            >
+              {users.length === 0 ? (
+                <option disabled hidden selected value="-1">
+                  Brak użytkowników
+                </option>
+              ) : (
+                <option disabled hidden value="-1">
+                  Wybierz użytkownika
+                </option>
+              )}
+              {users.map((user) => (
+                <option value={user._id}>
+                  {user.name} {user.surname}
+                </option>
+              ))}
             </select>
             <Button
               color="success"
               outline
               onClick={() => {
-                appendMember({ name: "Jan", surname: "Kowalski", _id: "1234" });
+                const member = users.find(
+                  (member) => member._id === answerRef.current!.value
+                );
+                if (member) {
+                  appendMember(member);
+                  removeUser(member._id);
+                }
               }}
               style={{ width: "38px", height: "38px" }}
               className="text-center"
+              disabled={users.length === 0}
             >
               +
             </Button>

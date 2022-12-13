@@ -6,7 +6,13 @@ import { Questions } from "./views/Questions/Questions";
 import { NotFound } from "./views/NotFound";
 import { Protected } from "./components/Protected/Protected";
 import { RouteObject } from "react-router-dom";
-import { loader, validate } from "./utilities";
+import {
+  getQuestion,
+  getQuestions,
+  getUser,
+  getUsers,
+  validate,
+} from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
 import { TeamForm } from "./views/Teams";
@@ -32,12 +38,12 @@ export const routes: RouteObject[] = [
       },
       {
         path: "users",
-        loader: () => loader({ path: "api/users" }),
+        loader: () => getUsers(),
         element: <UsersPage />,
       },
       {
         path: "users/:id",
-        loader: ({ params }) => loader({ path: `api/user/${params.id}` }),
+        loader: ({ params }) => getUser(params.id),
         element: <UserForm />,
       },
       {
@@ -46,12 +52,12 @@ export const routes: RouteObject[] = [
       },
       {
         path: "questions",
-        loader: () => loader({ path: "api/questions" }),
+        loader: () => getQuestions(),
         element: <Questions />,
       },
       {
         path: "questions/:id",
-        loader: ({ params }) => loader({ path: `api/question/${params.id}` }),
+        loader: ({ params }) => getQuestion(params.id),
         element: <QuestionForm />,
       },
       {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { deleteRequest } from "../../utilities";
+import { deleteUser as DELETE_USER } from "../../utilities";
 import { responseStatus, User } from "../../backendTypes";
 import { useAlert } from "../../contexts";
 
@@ -36,7 +36,7 @@ export const Confirm = ({
         <Button
           color="danger"
           onClick={async () => {
-            const status = await deleteRequest({ path: `api/user/${_id}` });
+            const status = await DELETE_USER(_id);
             if (status === responseStatus.SUCCESS) {
               alert.alertAndDismiss(status);
               toggle();

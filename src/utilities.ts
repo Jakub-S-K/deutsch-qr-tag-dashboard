@@ -1,62 +1,82 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
 import { User, PostRequest, responseStatus, Credentials } from "./backendTypes";
 
-export const loader = async ({
-  path,
-}: {
-  path: string;
-  requestType?: "GET";
-  payload?: any;
-}) => {
-  try {
-    const response = await axios.get<User[]>(
-      `${process.env.REACT_APP_URL}/${path}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "content-type": "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
-        return responseStatus.ERR_UNAUTHORIZED;
-      }
-    } else {
-      console.log(error);
+const Token = (): string => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return `Bearer ${token}`;
+  }
+  return "";
+};
+const api = axios.create({
+  baseURL: process.env.REACT_APP_URL,
+  headers: {
+    "content-type": "application/json",
+  },
+});
+
+function handleError(error: unknown): number {
+  if (axios.isAxiosError(error)) {
+    console.log(error);
+    if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
+      return responseStatus.ERR_UNAUTHORIZED;
     }
+    if (error.response?.status === responseStatus.ERR_NOT_FOUND) {
+      return responseStatus.ERR_NOT_FOUND;
+    }
+    return responseStatus.ERR_INTERNAL;
+  } else {
+    console.log(error);
+    return responseStatus.ERR_INTERNAL;
+  }
+}
+const GET_BOILERPLATE = async (path: string, params?: {}) => {
+  try {
+    const response = await api
+      .get(path, {
+        headers: { Authorization: Token() },
+        params: params,
+      })
+      .then(({ data }) => data);
+    return response;
+  } catch (error) {
+    return { status: handleError(error) };
   }
 };
-export const deleteRequest = async ({ path }: { path: string }) => {
+
+export const getUsers = async () => {
+  return GET_BOILERPLATE("api/users");
+};
+export const getUser = async (id: string | undefined) => {
+  return GET_BOILERPLATE(`api/user/${id}`);
+};
+export const getQuestions = async () => {
+  return GET_BOILERPLATE("api/questions");
+};
+export const getQuestion = async (id: string | undefined) => {
+  return GET_BOILERPLATE(`api/question/${id}`);
+};
+
+const DELETE_BOILERPLATE = async (path: string, params?: {}) => {
   try {
-    const response = await axios.delete<number>(
-      `${process.env.REACT_APP_URL}/${path}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "content-type": "application/json",
-        },
-      }
-    );
-    return responseStatus.SUCCESS;
+    const response = await api
+      .delete(path, {
+        headers: { Authorization: Token() },
+      })
+      .then(({ status }) => status);
+    return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error);
-      if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
-        return responseStatus.ERR_UNAUTHORIZED;
-      }
-      if (error.response?.status === responseStatus.ERR_NOT_FOUND) {
-        return responseStatus.ERR_NOT_FOUND;
-      }
-      return responseStatus.ERR_INTERNAL;
-    } else {
-      console.log(error);
-    }
+    handleError(error);
   }
 };
+
+export const deleteUser = async (id: string | undefined) => {
+  return DELETE_BOILERPLATE(`api/user/${id}`);
+};
+export const deleteQuestion = async (id: string | undefined) => {
+  return DELETE_BOILERPLATE(`api/question/${id}`);
+};
+
 export const postRequest = async ({
   path,
   payload,

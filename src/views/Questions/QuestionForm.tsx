@@ -48,7 +48,6 @@ export const QuestionForm = () => {
   const appendAnswer = (answerContent: string) => {
     setAnswers([...answers, { content: answerContent, isCorrect: false }]);
     setNewAnswer("");
-    answerRef.current!.value = "";
   };
   const handleAnswerChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -208,6 +207,7 @@ export const QuestionForm = () => {
               onChange={(e) => {
                 setNewAnswer(e.currentTarget.value);
               }}
+              value={newAnswer}
               innerRef={answerRef}
             ></Input>
             <Button

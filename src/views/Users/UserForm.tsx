@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Alert, Button, Input, Label } from "reactstrap";
-import { patchRequest, postRequest } from "../../utilities";
+import { addUser, editUser } from "../../utilities";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { responseStatus } from "../../backendTypes";
@@ -25,25 +25,22 @@ export const UserForm = () => {
     setUser({ ...user, [property]: value });
   };
   const modifyUserAction = async () => {
-    const status = await patchRequest({
-      path: `api/user/${user._id}`,
-      payload: { name: user.name, surname: user.surname },
+    const status = await editUser(user._id, {
+      name: user.name,
+      surname: user.surname,
     });
-    setStatus(status);
-    if (status === responseStatus.SUCCESS) {
+    setStatus(status!.status);
+    if (status!.status === responseStatus.SUCCESS) {
       navigate(-1);
     }
   };
   const addUserAction = async () => {
-    setStatus(
-      await postRequest({
-        path: "api/user",
-        payload: { name: user.name, surname: user.surname },
-      })
-    );
+    const response = await addUser({ name: user.name, surname: user.surname });
+    if (response!.status) {
+      setStatus(response!.status);
+    }
     setUser({ ...user, name: "", surname: "" });
   };
-  console.log(`${userData.surname} -> ${user.surname}`);
   return (
     <>
       <Retreat />

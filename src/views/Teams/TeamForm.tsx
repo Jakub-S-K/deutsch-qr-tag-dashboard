@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
-import { postRequest, patchRequest } from "../../utilities";
 import { responseStatus, User } from "../../backendTypes";
 import { useAlert } from "../../contexts";
 import userEvent from "@testing-library/user-event";

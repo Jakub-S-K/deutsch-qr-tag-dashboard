@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User, PostRequest, responseStatus, Credentials } from "./backendTypes";
+import { User, responseStatus, Credentials, Question } from "./backendTypes";
 
 const Token = (): string => {
   const token = localStorage.getItem("token");
@@ -62,6 +62,7 @@ const DELETE_BOILERPLATE = async (path: string, params?: {}) => {
     const response = await api
       .delete(path, {
         headers: { Authorization: Token() },
+        params: params,
       })
       .then(({ status }) => status);
     return response;
@@ -77,61 +78,50 @@ export const deleteQuestion = async (id: string | undefined) => {
   return DELETE_BOILERPLATE(`api/question/${id}`);
 };
 
-export const postRequest = async ({
-  path,
-  payload,
-}: {
-  path: string;
-  payload: object;
-}) => {
+const POST_BOILERPLATE = async (path: string, payload: object, params?: {}) => {
   try {
-    const response = await axios.post<PostRequest>(
-      `${process.env.REACT_APP_URL}/${path}`,
-      { ...payload },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "content-type": "application/json",
-        },
-      }
-    );
-    console.log(response);
-    return response.status;
+    const response = await api
+      .post(path, payload, {
+        headers: { Authorization: Token() },
+        params: params,
+      })
+      .then(({ data, status }) => ({ data: data, status: status }));
+    return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return responseStatus.ERR_UNAUTHORIZED;
-    } else {
-      console.log(error);
-    }
+    handleError(error);
   }
 };
-export const patchRequest = async ({
-  path,
-  payload,
-}: {
-  path: string;
-  payload: object;
-}) => {
+
+export const addUser = async (user: Partial<User>) => {
+  return POST_BOILERPLATE(`api/user`, user);
+};
+export const addQuestion = async (question: Partial<Question>) => {
+  return POST_BOILERPLATE(`api/question`, question);
+};
+
+const PATCH_BOILERPLATE = async (
+  path: string,
+  payload: object,
+  params?: {}
+) => {
   try {
-    const response = await axios.patch(
-      `${process.env.REACT_APP_URL}/${path}`,
-      { ...payload },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "content-type": "application/json",
-        },
-      }
-    );
-    console.log(response);
-    return response.status;
+    const response = await api
+      .patch(path, payload, {
+        headers: { Authorization: Token() },
+        params: params,
+      })
+      .then(({ data, status }) => ({ data: data, status: status }));
+    return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return -1;
-    } else {
-      console.log(error);
-    }
+    handleError(error);
   }
+};
+
+export const editUser = async (id: string, user: Partial<User>) => {
+  return PATCH_BOILERPLATE(`api/user/${id}`, user);
+};
+export const editQuestion = async (id: string, question: Partial<Question>) => {
+  return PATCH_BOILERPLATE(`api/question/${id}`, question);
 };
 
 export const validate = async ({

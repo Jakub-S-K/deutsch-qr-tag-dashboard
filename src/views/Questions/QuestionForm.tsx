@@ -3,7 +3,7 @@ import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
-import { postRequest, patchRequest } from "../../utilities";
+import { addQuestion, editQuestion } from "../../utilities";
 import { payloadQuestion, Question, responseStatus } from "../../backendTypes";
 import { useAlert } from "../../contexts";
 
@@ -118,24 +118,24 @@ export const QuestionForm = () => {
               payload.answer = correctAnswersToFetch;
             }
             if (Object.keys(payload).length > 0) {
-              const res: any = await patchRequest({
-                path: `api/question/${id}`,
-                payload: payload,
-              });
-              alert.alertAndDismiss(res);
-              navigate(-1);
+              if (id) {
+                const res = await editQuestion(id, payload);
+                alert.alertAndDismiss(res!.status);
+                navigate(-1);
+              }
             } else {
               alert.alertAndDismiss(responseStatus.ERR_ALREADY_EXISTS);
             }
           } else {
-            postRequest({
-              path: "api/question",
-              payload: {
-                question: question,
-                answers: answersToFetch,
-                answer: correctAnswersToFetch,
-              },
+            const response = await addQuestion({
+              question: question,
+              answers: answersToFetch,
+              answer: correctAnswersToFetch,
             });
+            alert.alertAndDismiss(response!.status);
+            if (response!.status === responseStatus.SUCCESS) {
+              navigate(-1);
+            }
           }
         }}
       >

@@ -20,6 +20,10 @@ export const Login = () => {
         message: "Zalogowano pomyślnie!",
       });
       navigate("/");
+    } else {
+      alert.alertAndDismiss(responseStatus.ERR_UNAUTHORIZED, {
+        message: "Zaloguj się, aby kontynuować!",
+      });
     }
   }, []);
   return (
@@ -28,19 +32,14 @@ export const Login = () => {
       style={{ minWidth: "20vw", minHeight: "50vh" }}
       onSubmit={async (e) => {
         e.preventDefault();
-        const status = await getToken({ username, password });
-        if (status === responseStatus.SUCCESS) {
+        const response = await getToken({ username, password });
+        if (response === responseStatus.SUCCESS) {
           alert.alertAndDismiss(responseStatus.SUCCESS, {
             message: "Zalogowano pomyślnie!",
           });
           navigate("/");
         } else {
-          if (status === responseStatus.ERR_BAD_REQUEST) {
-            alert.alertAndDismiss(responseStatus.ERR_BAD_REQUEST);
-          }
-          if (status === responseStatus.ERR_NOT_FOUND) {
-            alert.alertAndDismiss(responseStatus.ERR_NOT_FOUND);
-          }
+          alert.alertAndDismiss(response);
         }
       }}
     >

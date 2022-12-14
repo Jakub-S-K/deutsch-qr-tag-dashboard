@@ -3,13 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useAlert } from "../../contexts";
-import { responseStatus } from "../../backendTypes";
+import { responseStatus, Token } from "../../backendTypes";
 
-interface Token {
-  id: string;
-  iat: EpochTimeStamp;
-  exp: EpochTimeStamp;
-}
 export const Protected = () => {
   const alert = useAlert();
   const [redirect, setRedirect] = useState(true);

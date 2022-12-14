@@ -30,3 +30,9 @@ export enum responseStatus {
   ERR_ALREADY_EXISTS = 409,
   ERR_INTERNAL = 500,
 }
+
+export interface Token {
+  id: string;
+  iat: EpochTimeStamp;
+  exp: EpochTimeStamp;
+}

@@ -1,5 +1,12 @@
 import axios from "axios";
-import { User, responseStatus, Credentials, Question } from "./backendTypes";
+import {
+  User,
+  responseStatus,
+  Credentials,
+  Question,
+  Token as TokenType,
+} from "./backendTypes";
+import jwtDecode from "jwt-decode";
 
 const Token = (): string => {
   const token = localStorage.getItem("token");
@@ -124,66 +131,28 @@ export const editQuestion = async (id: string, question: Partial<Question>) => {
   return PATCH_BOILERPLATE(`api/question/${id}`, question);
 };
 
-export const validate = async ({
-  path = "api/access_test",
-  requestType = "GET",
-}: {
-  path?: string;
-  requestType?: "GET" | "POST";
-}) => {
-  if (!localStorage.getItem("token")) {
-    return responseStatus.ERR_UNAUTHORIZED;
-  }
-  if (requestType === "GET") {
-    try {
-      const response = await axios.get<User[]>(
-        `${process.env.REACT_APP_URL}/${path}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "content-type": "application/json",
-          },
-        }
-      );
-      if (response.status === responseStatus.ERR_UNAUTHORIZED) {
-        localStorage.removeItem("token");
-        return responseStatus.ERR_UNAUTHORIZED;
-      }
-      return response.status;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === responseStatus.ERR_UNAUTHORIZED) {
-          localStorage.removeItem("token");
-        }
-        return error.response?.status;
-      } else {
-        console.log(error);
-      }
+export const validate = async () => {
+  try {
+    if (!localStorage.getItem("token")) {
+      return responseStatus.ERR_UNAUTHORIZED;
     }
+    const { exp } = jwtDecode<TokenType>(localStorage.getItem("token")!);
+    if (Date.now() < exp * 1000) {
+      return responseStatus.SUCCESS;
+    } else {
+      localStorage.removeItem("token");
+      return responseStatus.ERR_INTERNAL;
+    }
+  } catch (error) {
+    localStorage.removeItem("token");
+    return handleError(error);
   }
 };
 export const getToken = async ({ username, password }: Credentials) => {
-  try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_URL}/api/login`,
-      { username: username, password: password },
-      {
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
-    console.log(response);
-    if (typeof response.data.token !== "undefined") {
-      localStorage.setItem("token", response.data.token);
-      return response.status;
-    }
-    return response.status;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.status;
-    } else {
-      console.log(error);
-    }
-  }
+  const response = await POST_BOILERPLATE("api/login", {
+    username: username,
+    password: password,
+  });
+  localStorage.setItem("token", response!.data.token);
+  return response!.status;
 };

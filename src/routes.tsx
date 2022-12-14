@@ -24,7 +24,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: "/login",
-    loader: () => validate({}),
+    loader: () => validate(),
     element: <Login />,
   },
   {

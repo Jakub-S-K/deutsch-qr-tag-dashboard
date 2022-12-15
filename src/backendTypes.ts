@@ -47,3 +47,13 @@ export const isResponseWithData = (obj: any): obj is Response => {
 export const isUserArr = (obj: any): obj is User[] => {
   return Array.isArray(obj) && obj.every((value) => isUser(value));
 };
+
+export const isPayloadQuestion = (obj: any): obj is payloadQuestion => {
+  return !!obj && "question" in obj && "answers" in obj && "answer" in obj;
+};
+export const isQuestion = (obj: any): obj is Question => {
+  return isPayloadQuestion(obj) && "_id" in obj;
+};
+export const isQuestionArr = (obj: any): obj is Question[] => {
+  return Array.isArray(obj) && obj.every((value) => isQuestion(value));
+};

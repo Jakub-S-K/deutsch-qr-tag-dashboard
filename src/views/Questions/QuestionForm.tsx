@@ -4,7 +4,12 @@ import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import { addQuestion, editQuestion } from "../../utilities";
-import { payloadQuestion, Question, responseStatus } from "../../backendTypes";
+import {
+  payloadQuestion,
+  isPayloadQuestion,
+  responseStatus,
+  isResponse,
+} from "../../backendTypes";
 import { useAlert } from "../../contexts";
 
 interface answer {
@@ -13,16 +18,6 @@ interface answer {
 }
 
 export const QuestionForm = () => {
-  const isQuestion = (data: unknown): data is Question => {
-    return (
-      typeof data === "object" &&
-      data !== null &&
-      data !== undefined &&
-      "answer" in data &&
-      "answers" in data &&
-      "question" in data
-    );
-  };
   const { id } = useParams();
   const navigate = useNavigate();
   const alert = useAlert();
@@ -32,12 +27,12 @@ export const QuestionForm = () => {
   const [answers, setAnswers] = useState<answer[]>([]);
   const [newAnswer, setNewAnswer] = useState<string>("");
   useEffect(() => {
-    if (isQuestion(loaderData)) {
+    if (isResponse(loaderData) && isPayloadQuestion(loaderData.data)) {
       modify.current = true;
-      setQuestion(loaderData.question);
+      setQuestion(loaderData.data.question);
       setAnswers([
-        ...loaderData.answers.map((value: string, index: number) => {
-          if (loaderData.answer.includes(index)) {
+        ...loaderData.data.answers.map((value: string, index: number) => {
+          if (loaderData.data.answer.includes(index)) {
             return { content: value, isCorrect: true };
           }
           return { content: value, isCorrect: false };
@@ -107,14 +102,18 @@ export const QuestionForm = () => {
               })
               .filter((value) => value !== null && value !== -1),
           ];
-          if (modify.current && isQuestion(loaderData)) {
-            if (question !== loaderData.question) {
+          if (
+            modify.current &&
+            isResponse(loaderData) &&
+            isPayloadQuestion(loaderData.data)
+          ) {
+            if (question !== loaderData.data.question) {
               payload.question = question;
             }
-            if (!compareArrays(answersToFetch, loaderData.answers)) {
+            if (!compareArrays(answersToFetch, loaderData.data.answers)) {
               payload.answers = answersToFetch;
             }
-            if (!compareArrays(correctAnswersToFetch, loaderData.answer)) {
+            if (!compareArrays(correctAnswersToFetch, loaderData.data.answer)) {
               payload.answer = correctAnswersToFetch;
             }
             if (Object.keys(payload).length > 0) {

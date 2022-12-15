@@ -3,7 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Button, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
-import { Question, responseStatus } from "../../backendTypes";
+import {
+  isQuestionArr,
+  isResponse,
+  Question,
+  responseStatus,
+} from "../../backendTypes";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Confirm } from "../../components/Confirm/Confirm";
 import { useAlert } from "../../contexts";
@@ -31,16 +36,21 @@ export const Questions = () => {
     setModal({ ...modal, isOpen: !modal.isOpen, ...question });
   };
   const navigate = useNavigate();
-  const [questionData, setQuestionData]: any = useState(useLoaderData());
+  const data = useLoaderData();
+  const [questionData, setQuestionData] = useState<Question[]>(() => {
+    if (isResponse(data) && isQuestionArr(data.data)) {
+      return data.data;
+    }
+    return [];
+  });
   const deleteQuestion = (id: string) => {
     setQuestionData([
       ...questionData.filter((question: Question) => question._id !== id),
     ]);
   };
   useEffect(() => {
-    if (questionData === responseStatus.ERR_UNAUTHORIZED) {
-      alert.alertAndDismiss(responseStatus.ERR_UNAUTHORIZED);
-      navigate("/login");
+    if (isResponse(data) && data.status !== responseStatus.SUCCESS) {
+      alert.alertAndDismiss(data.status);
     }
   }, []);
   if (typeof questionData !== "object") {

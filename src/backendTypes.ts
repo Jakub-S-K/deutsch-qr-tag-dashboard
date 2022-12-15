@@ -15,11 +15,9 @@ export interface payloadQuestion {
 export interface Question extends payloadQuestion {
   _id: string;
 }
-export interface PostRequest {
+export interface Response<T = any> {
   status: number;
-  data: {
-    _id: string;
-  };
+  data?: T;
 }
 export enum responseStatus {
   NO_ALERT = 0,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Table } from "reactstrap";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
-import { User } from "../../backendTypes";
+import { isResponse, isUserArr, User } from "../../backendTypes";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Confirm } from "../../components/Confirm/Confirm";
 
@@ -28,7 +28,13 @@ export const Users = () => {
     setModal({ ...modal, isOpen: !modal.isOpen, ...user });
   };
   const navigate = useNavigate();
-  const [userData, setUserData]: any = useState(useLoaderData());
+  const data = useLoaderData();
+  const [userData, setUserData] = useState<User[]>(() => {
+    if (isResponse(data) && isUserArr(data.data)) {
+      return data!.data;
+    }
+    return [];
+  });
   const deleteUser = (id: string) => {
     setUserData([...userData.filter((user: User) => user._id !== id)]);
   };

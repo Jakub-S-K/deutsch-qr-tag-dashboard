@@ -1,43 +1,42 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Alert, Button, Input, Label } from "reactstrap";
+import React, { useState, useRef } from "react";
+import { Button, Input, Label } from "reactstrap";
 import { addUser, editUser } from "../../utilities";
+import { useAlert } from "../../contexts";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { responseStatus } from "../../backendTypes";
+import { User, isResponse, isUser, responseStatus } from "../../backendTypes";
 
 export const UserForm = () => {
   const navigate = useNavigate();
-  let userData: any = useLoaderData();
+  const alert = useAlert();
+  const data = useLoaderData();
   let userModify = true;
-  if (!userData) {
-    userData = { name: "", surname: "" };
+  const [user, setUser] = useState<User>(() => {
+    if (isResponse(data) && isUser(data.data)) {
+      return data!.data;
+    }
     userModify = false;
-  }
-  const [user, setUser] = useState(userData);
+    return { _id: "", name: "", surname: "" };
+  });
   const nameInput = useRef<HTMLInputElement>(null);
-  const [status, setStatus] = useState<number | undefined>(-1);
-  useEffect(() => {
-    setTimeout(() => {
-      setStatus(-1);
-    }, 2000);
-  }, [status]);
   const handleChange = (property: "name" | "surname", value: string) => {
     setUser({ ...user, [property]: value });
   };
   const modifyUserAction = async () => {
-    const status = await editUser(user._id, {
+    const response = await editUser(user._id, {
       name: user.name,
       surname: user.surname,
     });
-    setStatus(status!.status);
-    if (status!.status === responseStatus.SUCCESS) {
+    alert.alertAndDismiss(response!.status);
+    if (response!.status === responseStatus.SUCCESS) {
       navigate(-1);
     }
   };
   const addUserAction = async () => {
     const response = await addUser({ name: user.name, surname: user.surname });
-    if (response!.status) {
-      setStatus(response!.status);
+    alert.alertAndDismiss(response!.status);
+    if (response!.status === responseStatus.SUCCESS) {
+      navigate(-1);
     }
     setUser({ ...user, name: "", surname: "" });
   };
@@ -55,7 +54,6 @@ export const UserForm = () => {
           setTimeout(() => nameInput.current!.focus(), 100);
         }}
       >
-        {status === 200 ? <Alert>Zapisano pomyślnie</Alert> : null}
         <Label for="name">Imię</Label>
         <Input
           id="name"
@@ -91,7 +89,10 @@ export const UserForm = () => {
           <Button
             color="primary"
             disabled={
-              user.name === userData.name && user.surname === userData.surname
+              isResponse(data) && isUser(data.data)
+                ? user.name === data.data.name &&
+                  user.surname === data.data.surname
+                : false
             }
           >
             Zapisz

@@ -34,3 +34,16 @@ export interface Token {
   iat: EpochTimeStamp;
   exp: EpochTimeStamp;
 }
+
+export const isUser = (obj: any): obj is User => {
+  return !!obj && "_id" in obj && "name" in obj && "surname" in obj;
+};
+export const isResponse = (obj: any): obj is Response => {
+  return !!obj && "status" in obj;
+};
+export const isResponseWithData = (obj: any): obj is Response => {
+  return isResponse(obj) && "data" in obj;
+};
+export const isUserArr = (obj: any): obj is User[] => {
+  return Array.isArray(obj) && obj.every((value) => isUser(value));
+};

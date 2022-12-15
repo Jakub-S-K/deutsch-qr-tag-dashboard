@@ -10,12 +10,12 @@ export const UserForm = () => {
   const navigate = useNavigate();
   const alert = useAlert();
   const data = useLoaderData();
-  let userModify = true;
+  const userModify = useRef(true);
   const [user, setUser] = useState<User>(() => {
     if (isResponse(data) && isUser(data.data)) {
       return data!.data;
     }
-    userModify = false;
+    userModify.current = false;
     return { _id: "", name: "", surname: "" };
   });
   const nameInput = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ export const UserForm = () => {
     const response = await addUser({ name: user.name, surname: user.surname });
     alert.alertAndDismiss(response!.status);
     if (response!.status === responseStatus.SUCCESS) {
-      navigate(-1);
+      //navigate(-1);
     }
     setUser({ ...user, name: "", surname: "" });
   };
@@ -46,7 +46,7 @@ export const UserForm = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          if (userModify) {
+          if (userModify.current) {
             modifyUserAction();
           } else {
             addUserAction();
@@ -85,7 +85,7 @@ export const UserForm = () => {
           }
           className="mb-2"
         ></Input>
-        {userModify ? (
+        {userModify.current ? (
           <Button
             color="primary"
             disabled={

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Toast, CloseButton } from "reactstrap";
 import cx from "classnames";
 import { useAlert } from "../../contexts";
 import { responseStatus } from "../../backendTypes";
+import { useNavigate } from "react-router-dom";
 export const Alert = () => {
   const value = useAlert();
+  const navigate = useNavigate();
 
   const getMessage = (status: responseStatus) => {
     switch (status) {
@@ -22,6 +24,12 @@ export const Alert = () => {
         return "Wystąpił błąd. Prosimy spróbować później.";
     }
   };
+  useEffect(() => {
+    if (value.alert === responseStatus.ERR_UNAUTHORIZED) {
+      navigate("/login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value.alert]);
   return (
     <Toast
       role={"alert"}

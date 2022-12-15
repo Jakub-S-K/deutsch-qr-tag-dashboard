@@ -1,33 +1,43 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { deleteUser as DELETE_USER } from "../../utilities";
-import { responseStatus, User } from "../../backendTypes";
+import { deleteQuestion, deleteUser } from "../../utilities";
+import { responseStatus } from "../../backendTypes";
 import { useAlert } from "../../contexts";
 
 type ConfirmProps = {
   isOpen: boolean;
   toggle: Function;
   _id: string;
-  name: string;
-  surname: string;
-  deleteUser: Function;
-} & User;
+  content?: string;
+  removeItem: Function;
+  target?: "user" | "question" | "team";
+};
 
 export const Confirm = ({
   isOpen,
   toggle,
-  name,
-  surname,
   _id,
-  deleteUser,
+  removeItem,
+  content = "",
+  target = "user",
 }: ConfirmProps) => {
   const alert = useAlert();
+  const getTarget = () => {
+    if (target === "user") {
+      return "użytkownika";
+    }
+    if (target === "question") {
+      return "pytanie";
+    }
+    if (target === "team") {
+      return "zespół";
+    }
+  };
   return (
     <Modal isOpen={isOpen}>
       <ModalHeader>Usuń użytkownika</ModalHeader>
       <ModalBody>
-        Czy na pewno chcesz usunąć użytkownika{name ? " " + name : ""}
-        {surname ? " " + surname : ""}?
+        Czy na pewno chcesz usunąć {getTarget()} {`${content} `}?
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" outline onClick={() => toggle()}>
@@ -36,11 +46,20 @@ export const Confirm = ({
         <Button
           color="danger"
           onClick={async () => {
-            const status = await DELETE_USER(_id);
-            if (status === responseStatus.SUCCESS) {
-              alert.alertAndDismiss(status);
-              toggle();
-              deleteUser(_id);
+            const action = (status: number) => {
+              if (status === responseStatus.SUCCESS) {
+                alert.alertAndDismiss(status);
+                toggle();
+                removeItem(_id);
+              }
+            };
+            if (target === "user") {
+              const response = await deleteUser(_id);
+              action(response.status);
+            }
+            if (target === "question") {
+              const response = await deleteQuestion(_id);
+              action(response.status);
             }
           }}
         >

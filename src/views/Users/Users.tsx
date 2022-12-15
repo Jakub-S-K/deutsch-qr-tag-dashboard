@@ -43,10 +43,9 @@ export const Users = () => {
       <Confirm
         isOpen={modal.isOpen}
         toggle={() => toggleModal()}
-        name={modal.name}
-        surname={modal.surname}
+        content={`${modal.name} ${modal.surname}`}
         _id={modal._id}
-        deleteUser={deleteUser}
+        removeItem={deleteUser}
       />
       <Table striped>
         <thead>

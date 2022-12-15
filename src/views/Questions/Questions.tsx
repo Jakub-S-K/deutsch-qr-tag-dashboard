@@ -15,7 +15,6 @@ import { useAlert } from "../../contexts";
 
 type ModalProps = {
   isOpen: boolean;
-  name: string;
   question: string;
   _id: string;
 };
@@ -25,7 +24,6 @@ export const Questions = () => {
   const alert = useAlert();
   const [modal, setModal] = useState<ModalProps>({
     isOpen: false,
-    name: "",
     question: "",
     _id: "",
   });
@@ -61,10 +59,10 @@ export const Questions = () => {
       <Confirm
         isOpen={modal.isOpen}
         toggle={() => toggleModal()}
-        name={modal.name}
-        surname={modal.question}
+        content={`"${modal.question}"`}
         _id={modal._id}
-        deleteUser={deleteQuestion}
+        removeItem={deleteQuestion}
+        target="question"
       />
       <Table striped>
         <thead>

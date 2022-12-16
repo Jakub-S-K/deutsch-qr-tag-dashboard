@@ -142,22 +142,32 @@ export const editQuestion = async (id: string, question: Partial<Question>) => {
   return PATCH_BOILERPLATE(`api/question/${id}`, question);
 };
 
-export const validate = () => {
+export const validate = (): { status: number; expiresIn?: EpochTimeStamp } => {
   try {
     if (!localStorage.getItem("token")) {
-      return responseStatus.ERR_UNAUTHORIZED;
+      return { status: responseStatus.ERR_UNAUTHORIZED };
     }
     const { exp } = jwtDecode<TokenType>(localStorage.getItem("token")!);
     if (Date.now() < exp * 1000) {
-      return responseStatus.SUCCESS;
+      return {
+        status: responseStatus.SUCCESS,
+        expiresIn: exp * 1000 - Date.now(),
+      };
     } else {
       localStorage.removeItem("token");
-      return responseStatus.ERR_INTERNAL;
+      return { status: responseStatus.ERR_INTERNAL };
     }
   } catch (error) {
     localStorage.removeItem("token");
-    return handleError(error);
+    return { status: handleError(error) };
   }
+};
+export const renewToken = async () => {
+  const response = await GET_BOILERPLATE<{ token: string }>("api/renew");
+  if (!!response.data?.token) {
+    localStorage.setItem("token", response.data.token);
+  }
+  return response.status;
 };
 export const getToken = async ({ username, password }: Credentials) => {
   const response = await POST_BOILERPLATE<{ token: string }>("api/login", {

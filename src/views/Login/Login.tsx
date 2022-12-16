@@ -5,7 +5,7 @@ import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiAccount, mdiLock } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useAlert } from "../../contexts";
-import { responseStatus } from "../../backendTypes";
+import { isResponse, responseStatus } from "../../backendTypes";
 import { getToken } from "../../utilities";
 
 export const Login = () => {
@@ -15,7 +15,10 @@ export const Login = () => {
   const loaderData = useLoaderData();
   const alert = useAlert();
   useEffect(() => {
-    if (loaderData === responseStatus.SUCCESS) {
+    if (
+      isResponse(loaderData) &&
+      loaderData.status === responseStatus.SUCCESS
+    ) {
       alert.alertAndDismiss(responseStatus.SUCCESS, {
         message: "Zalogowano pomyślnie!",
       });

@@ -31,45 +31,45 @@ export const Main = () => {
           placeholder="Description..."
         />
       </InputGroup>
-      <Button color="primary" outline className="px-5 my-3">
+      <Button color="primary" outline className="px-5 col-12 col-md-3">
         Apply changes
       </Button>
-      <h3>User management</h3>
+      <h3 className="my-3">User management</h3>
       <hr className="vertical-line" />
-      <div className="d-flex flex-row justify-content-evenly">
-        <Button color="primary" outline className="px-5 mx-3">
+      <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
+        <Button color="primary" outline className="px-5 col-12 col-md-3">
           Leaderboard
         </Button>
         <Button
           color="warning"
           outline
-          className="px-5 mx-3"
+          className="px-5 col-12 col-md-3"
           onClick={() => navigate("/users")}
         >
           Manage
         </Button>
         <Button
           color="success"
-          className="px-5 mx-3"
+          className="px-5 col-12 col-md-3"
           onClick={() => navigate("/add/user")}
         >
           Add user
         </Button>
       </div>
-      <h3>Questions management</h3>
+      <h3 className="my-3">Questions management</h3>
       <hr className="vertical-line" />
-      <div className="d-flex flex-row justify-content-between">
+      <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
           color="warning"
           outline
-          className="px-5 mx-3"
+          className="px-5 col-12 col-md-3"
           onClick={() => navigate("/questions")}
         >
           Manage
         </Button>
         <Button
           color="success"
-          className="px-5 mx-3"
+          className="px-5 col-12 col-md-3"
           onClick={() => navigate("/add/question")}
         >
           Add question

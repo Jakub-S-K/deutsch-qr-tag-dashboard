@@ -49,8 +49,16 @@ export const Protected = () => {
           setRedirect(true);
           navigate("/login");
         }
+        const { expiresIn } = validate();
         timeoutID.current = null;
-        expires.current = 5000;
+        if (!!expiresIn) {
+          console.log(
+            `Odnowiono sesję. Wygaśnięcie za: ${expiresIn} czyli ${
+              expiresIn / 1000 / 60
+            } minut`
+          );
+          expires.current = expiresIn;
+        }
       }, expires.current - 15000);
     }
   }, [expires, timeoutID.current]);

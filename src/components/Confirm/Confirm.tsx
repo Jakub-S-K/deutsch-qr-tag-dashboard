@@ -35,7 +35,7 @@ export const Confirm = ({
   };
   return (
     <Modal isOpen={isOpen}>
-      <ModalHeader>Usuń użytkownika</ModalHeader>
+      <ModalHeader>Usuń {getTarget()}</ModalHeader>
       <ModalBody>
         Czy na pewno chcesz usunąć {getTarget()} {`${content} `}?
       </ModalBody>

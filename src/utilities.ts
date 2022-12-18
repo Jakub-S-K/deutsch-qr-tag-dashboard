@@ -7,6 +7,9 @@ import {
   Token as TokenType,
   Response,
   Team,
+  payloadTeam,
+  payloadQuestion,
+  payloadUser,
 } from "./backendTypes";
 import jwtDecode from "jwt-decode";
 
@@ -123,13 +126,13 @@ const POST_BOILERPLATE = async <T = any>(
   }
 };
 
-export const addUser = async (user: Partial<User>) => {
+export const addUser = async (user: payloadUser) => {
   return POST_BOILERPLATE<{ _id: string }>(`api/user`, user);
 };
-export const addQuestion = async (question: Partial<Question>) => {
+export const addQuestion = async (question: payloadQuestion) => {
   return POST_BOILERPLATE<{ _id: string }>(`api/question`, question);
 };
-export const addTeam = async (team: Partial<Team>) => {
+export const addTeam = async (team: payloadTeam) => {
   return POST_BOILERPLATE<{ _id: string }>(`api/team`, team);
 };
 

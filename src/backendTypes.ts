@@ -2,10 +2,12 @@ export interface Credentials {
   username: string | undefined;
   password: string | undefined;
 }
-export interface User {
-  _id: string;
+export interface payloadUser {
   name: string;
   surname: string;
+}
+export interface User extends payloadUser {
+  _id: string;
 }
 export interface payloadQuestion {
   question: string;
@@ -15,9 +17,12 @@ export interface payloadQuestion {
 export interface Question extends payloadQuestion {
   _id: string;
 }
-export interface Team {
-  _id: string;
+export interface payloadTeam {
   name: string;
+  members: string[];
+}
+export interface Team extends Omit<payloadTeam, "members"> {
+  _id: string;
   members: User[];
 }
 export interface Response<T = any> {

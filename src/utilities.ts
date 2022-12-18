@@ -6,6 +6,7 @@ import {
   Question,
   Token as TokenType,
   Response,
+  Team,
 } from "./backendTypes";
 import jwtDecode from "jwt-decode";
 
@@ -67,6 +68,15 @@ export const getQuestions = async () => {
 export const getQuestion = async (id: string | undefined) => {
   return GET_BOILERPLATE<Question>(`api/question/${id}`);
 };
+export const getTeams = async () => {
+  return GET_BOILERPLATE<Team[]>("api/teams");
+};
+export const getTeam = async (id: string | undefined) => {
+  return GET_BOILERPLATE<Team>(`api/team/${id}`);
+};
+export const getUsersWithoutTeam = async () => {
+  return GET_BOILERPLATE<User[]>("api/users/free");
+};
 
 const DELETE_BOILERPLATE = async <T = any>(
   path: string,
@@ -90,6 +100,9 @@ export const deleteUser = async (id: string | undefined) => {
 };
 export const deleteQuestion = async (id: string | undefined) => {
   return DELETE_BOILERPLATE(`api/question/${id}`);
+};
+export const deleteTeam = async (id: string | undefined) => {
+  return DELETE_BOILERPLATE(`api/team/${id}`);
 };
 
 const POST_BOILERPLATE = async <T = any>(
@@ -116,6 +129,9 @@ export const addUser = async (user: Partial<User>) => {
 export const addQuestion = async (question: Partial<Question>) => {
   return POST_BOILERPLATE<{ _id: string }>(`api/question`, question);
 };
+export const addTeam = async (team: Partial<Team>) => {
+  return POST_BOILERPLATE<{ _id: string }>(`api/team`, team);
+};
 
 const PATCH_BOILERPLATE = async <T = any>(
   path: string,
@@ -140,6 +156,9 @@ export const editUser = async (id: string, user: Partial<User>) => {
 };
 export const editQuestion = async (id: string, question: Partial<Question>) => {
   return PATCH_BOILERPLATE(`api/question/${id}`, question);
+};
+export const editTeam = async (id: string, team: Partial<Team>) => {
+  return PATCH_BOILERPLATE(`api/team/${id}`, team);
 };
 
 export const validate = (): { status: number; expiresIn?: EpochTimeStamp } => {

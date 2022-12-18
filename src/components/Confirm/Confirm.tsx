@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { deleteQuestion, deleteUser } from "../../utilities";
+import { deleteQuestion, deleteTeam, deleteUser } from "../../utilities";
 import { responseStatus } from "../../backendTypes";
 import { useAlert } from "../../contexts";
 
@@ -59,6 +59,10 @@ export const Confirm = ({
             }
             if (target === "question") {
               const response = await deleteQuestion(_id);
+              action(response.status);
+            }
+            if (target === "team") {
+              const response = await deleteTeam(_id);
               action(response.status);
             }
           }}

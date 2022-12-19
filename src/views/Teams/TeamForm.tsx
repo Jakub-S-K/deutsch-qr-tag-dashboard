@@ -2,9 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
-import { responseStatus, User } from "../../backendTypes";
+import {
+  isResponse,
+  isUserArr,
+  responseStatus,
+  User,
+} from "../../backendTypes";
 import { useAlert } from "../../contexts";
-import userEvent from "@testing-library/user-event";
+import { addTeam, editTeam, getUsersWithoutTeam } from "../../utilities";
 
 interface Team {
   name: string;
@@ -28,17 +33,21 @@ export const TeamForm = () => {
   const loaderData: unknown = useLoaderData();
   const [teamName, setTeamName] = useState<string>("");
   const [members, setMembers] = useState<User[]>([]);
-  const [users, setUsers] = useState<User[]>(() => [
-    { _id: "1234", name: "Jan", surname: "Kowalski" },
-    { _id: "1235", name: "Adam", surname: "Nawrocki" },
-    { _id: "1245", name: "Kacper", surname: "Wrocławski" },
-  ]);
+  const [users, setUsers] = useState<User[]>(() => []);
   useEffect(() => {
-    if (isTeam(loaderData)) {
+    console.log(loaderData);
+    if (isResponse(loaderData) && isTeam(loaderData.data)) {
       modify.current = true;
-      setTeamName(loaderData.name);
-      setMembers([...loaderData.members]);
+      setTeamName(loaderData.data.name);
+      setMembers([...loaderData.data.members]);
     }
+    async function getter() {
+      const response = await getUsersWithoutTeam();
+      if (isResponse(response) && isUserArr(response.data)) {
+        setUsers(response.data);
+      }
+    }
+    getter();
   }, []);
   const appendMember = (user: User) => {
     setMembers([...members, user]);
@@ -62,6 +71,9 @@ export const TeamForm = () => {
     }
   };
   const compareArrays = (arr1: Array<any>, arr2: Array<any>) => {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
     const areEqual = arr1.every((elem) => {
       return arr2.includes(elem);
     });
@@ -80,8 +92,27 @@ export const TeamForm = () => {
             });
             return null;
           }
-          if (modify.current && isTeam(loaderData)) {
+          if (
+            modify.current &&
+            isResponse(loaderData) &&
+            isTeam(loaderData.data) &&
+            !!id
+          ) {
+            const payload: Partial<Team> = {};
+            if (teamName !== loaderData.data.name) {
+              payload.name = teamName;
+            }
+            if (!compareArrays(loaderData.data.members, members)) {
+              payload.members = members;
+            }
+            const response = await editTeam(id, payload);
+            alert.alertAndDismiss(response.status);
           } else {
+            const response = await addTeam({
+              name: teamName,
+              members: [...members.map((user) => user._id)],
+            });
+            alert.alertAndDismiss(response.status);
           }
         }}
       >

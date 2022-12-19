@@ -11,11 +11,13 @@ import {
   getQuestions,
   getUser,
   getUsers,
+  getTeams,
   validate,
+  getTeam,
 } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
-import { TeamForm } from "./views/Teams";
+import { TeamForm, Teams } from "./views/Teams";
 
 export const routes: RouteObject[] = [
   {
@@ -63,6 +65,16 @@ export const routes: RouteObject[] = [
       {
         path: "/add/question",
         element: <QuestionForm />,
+      },
+      {
+        path: "teams",
+        loader: () => getTeams(),
+        element: <Teams />,
+      },
+      {
+        path: "teams/:id",
+        loader: ({ params }) => getTeam(params.id),
+        element: <TeamForm />,
       },
       {
         path: "add/team",

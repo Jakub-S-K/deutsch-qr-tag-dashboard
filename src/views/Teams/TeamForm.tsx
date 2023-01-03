@@ -223,7 +223,7 @@ export const TeamForm = () => {
                   //navigate(-1);
                 }}
               >
-                Dodaj pytanie
+                Dodaj zespół
               </Button>
             </div>
           )}

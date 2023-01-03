@@ -31,12 +31,10 @@ export const Main = () => {
           placeholder="Description..."
         />
       </InputGroup>
-      <Button color="primary" outline className="px-5 col-12 col-md-3">
-        Apply changes
-      </Button>
-      <h3 className="my-3">User management</h3>
-      <hr className="vertical-line" />
-      <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
+      <div className="d-flex justify-content-between">
+        <Button color="primary" outline className="px-5 col-12 col-md-3">
+          Apply changes
+        </Button>
         <Button
           color="primary"
           outline
@@ -45,17 +43,21 @@ export const Main = () => {
         >
           Leaderboard
         </Button>
+      </div>
+      <h3 className="my-3">User management</h3>
+      <hr className="vertical-line" />
+      <div className="col col-6 d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
           color="warning"
           outline
-          className="px-5 col-12 col-md-3"
+          className="px-5 col-12 col-md-5"
           onClick={() => navigate("/users")}
         >
           Manage
         </Button>
         <Button
           color="success"
-          className="px-5 col-12 col-md-3"
+          className="px-5 col-12 col-md-5"
           onClick={() => navigate("/add/user")}
         >
           Add user
@@ -63,18 +65,18 @@ export const Main = () => {
       </div>
       <h3 className="my-3">Questions management</h3>
       <hr className="vertical-line" />
-      <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
+      <div className="col col-6 d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
           color="warning"
           outline
-          className="px-5 col-12 col-md-3"
+          className="px-5 col-12 col-md-5"
           onClick={() => navigate("/questions")}
         >
           Manage
         </Button>
         <Button
           color="success"
-          className="px-5 col-12 col-md-3"
+          className="px-5 col-12 col-md-5"
           onClick={() => navigate("/add/question")}
         >
           Add question
@@ -82,18 +84,18 @@ export const Main = () => {
       </div>
       <h3 className="my-3">Teams management</h3>
       <hr className="vertical-line" />
-      <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
+      <div className="col col-6 d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
           color="warning"
           outline
-          className="px-5 col-12 col-md-3"
+          className="px-5 col-12 col-md-5"
           onClick={() => navigate("/teams")}
         >
           Manage
         </Button>
         <Button
           color="success"
-          className="px-5 col-12 col-md-3"
+          className="px-5 col-12 col-md-5"
           onClick={() => navigate("/add/team")}
         >
           Add team

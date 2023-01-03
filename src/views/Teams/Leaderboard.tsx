@@ -29,7 +29,6 @@ export const Leaderboard = () => {
         <tbody>
           {userData.map((user: Team, index: number) => (
             <tr key={index + "-r"}>
-              <td key={index + "-id"}>{user._id}</td>
               <td key={index + "-name"}>{user.name}</td>
               <td>{10 - index}</td>
             </tr>

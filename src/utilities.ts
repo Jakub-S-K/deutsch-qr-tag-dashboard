@@ -80,6 +80,9 @@ export const getTeam = async (id: string | undefined) => {
 export const getUsersWithoutTeam = async () => {
   return GET_BOILERPLATE<User[]>("api/users/free");
 };
+export const getLeaders = async () => {
+  return GET_BOILERPLATE<Team[]>("api/leaderboard");
+};
 
 const DELETE_BOILERPLATE = async <T = any>(
   path: string,

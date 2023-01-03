@@ -14,10 +14,12 @@ import {
   getTeams,
   validate,
   getTeam,
+  getLeaders,
 } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
 import { TeamForm, Teams } from "./views/Teams";
+import { Leaderboard } from "./views/Teams/Leaderboard";
 
 export const routes: RouteObject[] = [
   {
@@ -79,6 +81,11 @@ export const routes: RouteObject[] = [
       {
         path: "add/team",
         element: <TeamForm />,
+      },
+      {
+        path: "leaderboard",
+        loader: () => getLeaders(),
+        element: <Leaderboard />,
       },
     ],
   },

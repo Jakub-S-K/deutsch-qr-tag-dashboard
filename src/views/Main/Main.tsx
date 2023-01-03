@@ -37,7 +37,12 @@ export const Main = () => {
       <h3 className="my-3">User management</h3>
       <hr className="vertical-line" />
       <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
-        <Button color="primary" outline className="px-5 col-12 col-md-3">
+        <Button
+          color="primary"
+          outline
+          className="px-5 col-12 col-md-3"
+          onClick={() => navigate("/leaderboard")}
+        >
           Leaderboard
         </Button>
         <Button

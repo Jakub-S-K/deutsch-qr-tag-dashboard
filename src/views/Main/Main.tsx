@@ -80,6 +80,25 @@ export const Main = () => {
           Add question
         </Button>
       </div>
+      <h3 className="my-3">Teams management</h3>
+      <hr className="vertical-line" />
+      <div className="d-flex flex-row flex-wrap justify-content-between gap-2">
+        <Button
+          color="warning"
+          outline
+          className="px-5 col-12 col-md-3"
+          onClick={() => navigate("/teams")}
+        >
+          Manage
+        </Button>
+        <Button
+          color="success"
+          className="px-5 col-12 col-md-3"
+          onClick={() => navigate("/add/team")}
+        >
+          Add team
+        </Button>
+      </div>
     </>
   );
 };

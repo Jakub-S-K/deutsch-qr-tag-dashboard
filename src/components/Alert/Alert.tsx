@@ -36,14 +36,14 @@ export const Alert = () => {
       className={cx(
         "text-white",
         "position-fixed",
-        "p-3",
+        "px-3 py-4",
         "d-flex justify-content-between",
         {
           "bg-success": value.alert === responseStatus.SUCCESS,
           "bg-danger": value.alert >= 400,
         }
       )}
-      style={{ top: "15px", right: "15px" }}
+      style={{ top: "15px", right: "15px", zIndex: 15000 }}
       isOpen={value.alert !== responseStatus.NO_ALERT}
     >
       <>

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
-import { addUser, editUser } from "../../utilities";
+import { addUser, editUser, getUserQR } from "../../utilities";
 import { useAlert } from "../../contexts";
 import { Retreat } from "../../components/Retreat/Retreat";
 import { useLoaderData, useNavigate } from "react-router-dom";
@@ -40,8 +40,19 @@ export const UserForm = () => {
     }
     setUser({ ...user, name: "", surname: "" });
   };
+  const [img, setImg] = useState("");
+  useEffect(() => {
+    if (!!user._id) {
+      getUserQR(user._id).then((v) => {
+        if (typeof v === "string") {
+          setImg(v);
+        }
+      });
+    }
+  }, [user]);
   return (
     <>
+      <img src={img} alt="QR" />
       <Retreat />
       <form
         onSubmit={async (e) => {

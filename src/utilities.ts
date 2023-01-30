@@ -44,13 +44,13 @@ function handleError(error: unknown): number {
 }
 const GET_BOILERPLATE = async <T = any>(
   path: string,
-  params?: {}
+  options?: {}
 ): Promise<Response<T>> => {
   try {
     const response = await api
       .get(path, {
         headers: { Authorization: Token() },
-        params: params,
+        ...options,
       })
       .then(({ data, status }) => ({ data, status }));
     return response;
@@ -82,6 +82,15 @@ export const getUsersWithoutTeam = async () => {
 };
 export const getLeaders = async () => {
   return GET_BOILERPLATE<Team[]>("api/leaderboard");
+};
+export const getUserQR = (id: string | undefined) => {
+  return GET_BOILERPLATE<Blob>(`api/qr/user/${id}`, {
+    responseType: "blob",
+  }).then((data) => {
+    if (!!data.data) {
+      return URL.createObjectURL(data.data);
+    }
+  });
 };
 
 const DELETE_BOILERPLATE = async <T = any>(

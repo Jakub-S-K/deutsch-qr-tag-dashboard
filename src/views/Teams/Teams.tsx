@@ -7,7 +7,6 @@ import {
   isResponse,
   Team,
   responseStatus,
-  isTeam,
   isTeamArr,
 } from "../../backendTypes";
 import { useLoaderData, useNavigate } from "react-router-dom";

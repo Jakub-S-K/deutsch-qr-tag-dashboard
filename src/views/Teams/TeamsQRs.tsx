@@ -1,5 +1,5 @@
 import { getUserQR } from "../../utilities";
-import { isResponse, isTeamArr, Team } from "../../backendTypes";
+import { isResponse, isTeamArr } from "../../backendTypes";
 import {
   Page,
   Text,
@@ -10,9 +10,8 @@ import {
   Font,
   PDFViewer,
 } from "@react-pdf/renderer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Retreat } from "../../components/Retreat/Retreat";
 import { Button } from "reactstrap";
 
 Font.register({
@@ -57,11 +56,12 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: "column",
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     justifyContent: "space-between",
     alignContent: "space-between",
     height: "100%",
   },
+  justifyEnd: { flexDirection: "column", alignItems: "flex-end" },
   fontMedium: {
     fontSize: "24px",
     fontWeight: 700,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginRight: "15px",
   },
 });
-export const TeamsQrs = ({ title }: { title: string }) => {
+export const TeamsQrs = () => {
   const data = useLoaderData();
   const navigate = useNavigate();
   const [teams] = useState(() => {
@@ -81,6 +81,10 @@ export const TeamsQrs = ({ title }: { title: string }) => {
     }
     return [];
   });
+  const [title] = useState(() => {
+    return "Test";
+  });
+  const currentId = useRef(-1);
   const [qrs, setQrs] = useState<Array<any>>([]);
   useEffect(() => {
     async function getAllQrs() {
@@ -93,9 +97,10 @@ export const TeamsQrs = ({ title }: { title: string }) => {
       setQrs(await Promise.all(Object.values(requestsToPerform)));
     }
     getAllQrs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (qrs.length === 0) {
-    return null;
+    return <div>Loading...</div>;
   }
   return (
     <>
@@ -111,25 +116,35 @@ export const TeamsQrs = ({ title }: { title: string }) => {
       <PDFViewer style={{ width: "100%", height: "80vh" }}>
         <Document>
           <Page size="A4" style={styles.page}>
-            {teams.map((team) =>
-              team.members.map((user, index) => (
-                <View style={styles.row}>
-                  <Image style={styles.qr} src={qrs[index]}></Image>
-                  <View style={styles.column}>
-                    <View>
-                      <Text
-                        style={styles.fontMedium}
-                      >{`${user.name} ${user.surname}`}</Text>
-                      <Text>{team.name}</Text>
-                    </View>
-                    <View>
-                      <Text>Zawodnik {index + 1}</Text>
-                      <Text>{title}</Text>
-                      <Text>ID: {user._id}</Text>
+            {teams.map((team, teamIndex) =>
+              team.members.map((user, index) => {
+                if (currentId.current >= qrs.length - 1) {
+                  currentId.current = -1;
+                }
+                currentId.current += 1;
+                console.log(currentId.current);
+                return (
+                  <View style={styles.row} key={currentId.current}>
+                    <Image
+                      style={styles.qr}
+                      src={qrs[currentId.current]}
+                    ></Image>
+                    <View style={styles.column}>
+                      <View style={styles.justifyEnd}>
+                        <Text
+                          style={styles.fontMedium}
+                        >{`${user.name} ${user.surname}`}</Text>
+                        <Text>{team.name}</Text>
+                      </View>
+                      <View style={styles.justifyEnd}>
+                        <Text>Zawodnik {index + 1}</Text>
+                        <Text>{title}</Text>
+                        <Text>ID: {user._id}</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              ))
+                );
+              })
             )}
           </Page>
         </Document>

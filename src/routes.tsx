@@ -20,9 +20,7 @@ import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
 import { TeamForm, Teams } from "./views/Teams";
 import { Leaderboard } from "./views/Teams/Leaderboard";
-import { UsersQrs } from "./views/Users/UsersQRs";
 import { TeamsQrs } from "./views/Teams/TeamsQRs";
-import { PDFViewer } from "@react-pdf/renderer";
 
 export const routes: RouteObject[] = [
   {
@@ -92,7 +90,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: "qr/teams",
-        element: <TeamsQrs title="Test"></TeamsQrs>,
+        element: <TeamsQrs />,
         loader: () => getTeams(),
       },
     ],

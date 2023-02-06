@@ -5,7 +5,7 @@ import { useLoaderData } from "react-router-dom";
 import { Retreat } from "../../components/Retreat/Retreat";
 
 export const Leaderboard = () => {
-  const names = ["id", "Name", "Points"];
+  const names = ["Name", "Points"];
   const data = useLoaderData();
   const [userData] = useState<Team[]>(() => {
     if (isResponse(data) && isTeamArr(data.data)) {

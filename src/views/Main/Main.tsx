@@ -5,16 +5,13 @@ import Icon from "@mdi/react";
 import { useNavigate } from "react-router-dom";
 import { editOptions, getOptions } from "../../utilities";
 import { useAlert } from "../../contexts";
-import { link } from "../Teams/TeamsQRs";
 
 export const Main = () => {
   const navigate = useNavigate();
   const options = useRef<any>({});
   const alert = useAlert();
-  const [testowyLink, setLink] = useState("");
   useEffect(() => {
     async function getData() {
-      setLink(await link);
       const data = await getOptions();
       options.current = data.data;
       if (!!options.current.title) {
@@ -152,9 +149,6 @@ export const Main = () => {
         >
           Add team
         </Button>
-        <a href={testowyLink} target="_blank">
-          Try to get pdf
-        </a>
       </div>
     </>
   );

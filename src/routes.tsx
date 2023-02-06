@@ -21,7 +21,6 @@ import { UserForm } from "./views/Users/UserForm";
 import { TeamForm, Teams } from "./views/Teams";
 import { Leaderboard } from "./views/Teams/Leaderboard";
 import { TeamsQrs } from "./views/Teams/TeamsQRs";
-import { PDFViewer } from "@react-pdf/renderer";
 
 export const routes: RouteObject[] = [
   {
@@ -91,11 +90,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: "qr/teams",
-        element: (
-          <PDFViewer>
-            <TeamsQrs />
-          </PDFViewer>
-        ),
+        element: <TeamsQrs />,
         loader: () => getTeams(),
       },
     ],

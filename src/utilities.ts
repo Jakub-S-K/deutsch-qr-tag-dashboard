@@ -92,6 +92,9 @@ export const getUserQR = (id: string | undefined) => {
     }
   });
 };
+export const getOptions = async () => {
+  return GET_BOILERPLATE<any>("api/options");
+};
 
 const DELETE_BOILERPLATE = async <T = any>(
   path: string,
@@ -174,6 +177,9 @@ export const editQuestion = async (id: string, question: Partial<Question>) => {
 };
 export const editTeam = async (id: string, team: Partial<Team>) => {
   return PATCH_BOILERPLATE(`api/team/${id}`, team);
+};
+export const editOptions = async (options: Object) => {
+  return PATCH_BOILERPLATE(`api/options`, options);
 };
 
 export const validate = (): { status: number; expiresIn?: EpochTimeStamp } => {

@@ -52,7 +52,7 @@ export const UserForm = () => {
   }, [user]);
   return (
     <>
-      <img src={img} alt="QR" />
+      {userModify.current ? <img src={img} alt="QR" /> : null}
       <Retreat />
       <form
         onSubmit={async (e) => {

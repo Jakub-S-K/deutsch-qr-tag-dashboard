@@ -107,7 +107,7 @@ export const Main = () => {
         <Button
           color="primary"
           className="px-5 col-12 col-md-3"
-          onClick={() => navigate("/qr/users")}
+          onClick={() => navigate("/qr/teams")}
         >
           <Icon path={mdiPrinter} title="print" size={1} color="white" />
         </Button>

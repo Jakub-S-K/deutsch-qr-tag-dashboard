@@ -10,6 +10,7 @@ import {
   payloadTeam,
   payloadQuestion,
   payloadUser,
+  OnlineInTeam,
 } from "./backendTypes";
 import jwtDecode from "jwt-decode";
 
@@ -82,6 +83,9 @@ export const getUsersWithoutTeam = async () => {
 };
 export const getLeaders = async () => {
   return GET_BOILERPLATE<Team[]>("api/leaderboard");
+};
+export const getLiveUsers = async () => {
+  return GET_BOILERPLATE<OnlineInTeam[]>("api/leaderboard/users/live");
 };
 export const getUserQR = (id: string | undefined) => {
   return GET_BOILERPLATE<Blob>(`api/qr/user/${id}`, {

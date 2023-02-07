@@ -25,6 +25,10 @@ export interface Team extends Omit<payloadTeam, "members"> {
   _id: string;
   members: User[];
 }
+export interface OnlineInTeam {
+  _id: string;
+  count: number;
+}
 export interface Response<T = any> {
   status: number;
   data?: T;
@@ -79,4 +83,10 @@ export const isTeam = (obj: any): obj is Team => {
 };
 export const isTeamArr = (obj: any): obj is Team[] => {
   return Array.isArray(obj) && obj.every((value) => isTeam(value));
+};
+export const isOnlineInTeam = (obj: any): obj is OnlineInTeam => {
+  return !!obj && "_id" in obj && "count" in obj;
+};
+export const isOnlineInTeamArr = (obj: any): obj is OnlineInTeam[] => {
+  return Array.isArray(obj) && obj.every((value) => isOnlineInTeam(value));
 };

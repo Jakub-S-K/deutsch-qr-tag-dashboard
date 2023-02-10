@@ -96,6 +96,15 @@ export const getUserQR = (id: string | undefined) => {
     }
   });
 };
+export const getQuestionQR = (id: string | undefined) => {
+  return GET_BOILERPLATE<Blob>(`api/qr/question/${id}`, {
+    responseType: "blob",
+  }).then((data) => {
+    if (!!data.data) {
+      return URL.createObjectURL(data.data);
+    }
+  });
+};
 export const getOptions = async () => {
   return GET_BOILERPLATE<any>("api/options");
 };

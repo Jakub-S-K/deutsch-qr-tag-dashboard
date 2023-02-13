@@ -232,3 +232,7 @@ export const getToken = async ({ username, password }: Credentials) => {
   }
   return response!.status;
 };
+export const logout = () => {
+  localStorage.removeItem("token");
+  window.location.reload();
+};

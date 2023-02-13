@@ -22,6 +22,7 @@ import { TeamForm, Teams } from "./views/Teams";
 import { Leaderboard } from "./views/Teams/Leaderboard";
 import { TeamsQrs } from "./views/Teams/TeamsQRs";
 import { QuestionsQrs } from "./views/Questions/QuestionsQRs";
+import { QuestionsQrsV2 } from "./views/Questions/QuestionsQRsV2";
 
 export const routes: RouteObject[] = [
   {
@@ -97,6 +98,11 @@ export const routes: RouteObject[] = [
       {
         path: "qr/questions",
         element: <QuestionsQrs />,
+        loader: () => getQuestions(),
+      },
+      {
+        path: "qr/questions-2",
+        element: <QuestionsQrsV2 />,
         loader: () => getQuestions(),
       },
     ],

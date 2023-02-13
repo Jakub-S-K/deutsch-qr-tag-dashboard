@@ -137,6 +137,13 @@ export const Main = () => {
         >
           <Icon path={mdiPrinter} title="print" size={1} color="white" />
         </Button>
+        <Button
+          color="primary"
+          className="px-5 col-12 col-md-3"
+          onClick={() => navigate("/qr/questions-2")}
+        >
+          <Icon path={mdiPrinter} title="print" size={1} color="white" /> V2
+        </Button>
       </div>
       <h3 className="my-3">Teams management</h3>
       <hr className="vertical-line" />

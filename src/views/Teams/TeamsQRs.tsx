@@ -11,8 +11,7 @@ import {
   PDFViewer,
 } from "@react-pdf/renderer";
 import { useEffect, useRef, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { Button } from "reactstrap";
+import { useLoaderData } from "react-router-dom";
 
 Font.register({
   family: "Roboto",
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
 });
 export const TeamsQrs = () => {
   const data = useLoaderData();
-  const navigate = useNavigate();
   const [teams] = useState(() => {
     if (isResponse(data) && isTeamArr(data.data)) {
       return data.data;
@@ -103,52 +101,38 @@ export const TeamsQrs = () => {
     return <div>Loading...</div>;
   }
   return (
-    <>
-      <Button
-        color="danger"
-        onClick={() => {
-          navigate("/");
-        }}
-        className="w-20 h-20"
-      >
-        X
-      </Button>
-      <PDFViewer style={{ width: "100%", height: "80vh" }}>
-        <Document>
-          <Page size="A4" style={styles.page}>
-            {teams.map((team, teamIndex) =>
-              team.members.map((user, index) => {
-                if (currentId.current >= qrs.length - 1) {
-                  currentId.current = -1;
-                }
-                currentId.current += 1;
-                console.log(currentId.current);
-                return (
-                  <View style={styles.row} key={currentId.current}>
-                    <Image
-                      style={styles.qr}
-                      src={qrs[currentId.current]}
-                    ></Image>
-                    <View style={styles.column}>
-                      <View style={styles.justifyEnd}>
-                        <Text
-                          style={styles.fontMedium}
-                        >{`${user.name} ${user.surname}`}</Text>
-                        <Text>{team.name}</Text>
-                      </View>
-                      <View style={styles.justifyEnd}>
-                        <Text>Zawodnik {index + 1}</Text>
-                        <Text>{title}</Text>
-                        <Text>ID: {user._id}</Text>
-                      </View>
+    <PDFViewer style={{ width: "100%", height: "80vh" }}>
+      <Document>
+        <Page size="A4" style={styles.page}>
+          {teams.map((team, teamIndex) =>
+            team.members.map((user, index) => {
+              if (currentId.current >= qrs.length - 1) {
+                currentId.current = -1;
+              }
+              currentId.current += 1;
+              console.log(currentId.current);
+              return (
+                <View style={styles.row} key={currentId.current}>
+                  <Image style={styles.qr} src={qrs[currentId.current]}></Image>
+                  <View style={styles.column}>
+                    <View style={styles.justifyEnd}>
+                      <Text
+                        style={styles.fontMedium}
+                      >{`${user.name} ${user.surname}`}</Text>
+                      <Text>{team.name}</Text>
+                    </View>
+                    <View style={styles.justifyEnd}>
+                      <Text>Zawodnik {index + 1}</Text>
+                      <Text>{title}</Text>
+                      <Text>ID: {user._id}</Text>
                     </View>
                   </View>
-                );
-              })
-            )}
-          </Page>
-        </Document>
-      </PDFViewer>
-    </>
+                </View>
+              );
+            })
+          )}
+        </Page>
+      </Document>
+    </PDFViewer>
   );
 };

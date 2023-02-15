@@ -11,8 +11,7 @@ import {
   PDFViewer,
 } from "@react-pdf/renderer";
 import { useEffect, useRef, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { Button } from "reactstrap";
+import { useLoaderData } from "react-router-dom";
 
 Font.register({
   family: "Roboto",
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
 });
 export const QuestionsQrsV2 = () => {
   const data = useLoaderData();
-  const navigate = useNavigate();
   const [questions] = useState(() => {
     if (isResponse(data) && isQuestionArr(data.data)) {
       return data.data;
@@ -103,56 +101,45 @@ export const QuestionsQrsV2 = () => {
     return <div>Loading...</div>;
   }
   return (
-    <>
-      <Button
-        color="danger"
-        onClick={() => {
-          navigate("/");
-        }}
-        className="w-20 h-20"
-      >
-        X
-      </Button>
-      <PDFViewer style={{ width: "100%", height: "80vh" }}>
-        <Document>
-          <Page size="A4" style={styles.page}>
-            {questions.map((question, index) => {
-              if (currentId.current >= qrs.length - 1) {
-                currentId.current = -1;
-              }
-              currentId.current += 1;
-              console.log(currentId.current);
-              return (
-                <View
-                  style={{
-                    ...styles.row,
-                    borderRight: index % 2 === 0 ? "1px" : "0px",
-                    borderRightStyle: "dashed",
-                  }}
-                  key={currentId.current}
-                >
-                  <View style={styles.column}>
-                    <View style={{ alignItems: "center" }}>
-                      <Image
-                        style={styles.qr}
-                        src={qrs[currentId.current]}
-                      ></Image>
-                      <Text style={styles.fontMedium}>
-                        Pytanie nr {index + 1}
-                      </Text>
-                      <Text>
-                        Aby udzielić odpowiedzi - zeskanuj kod w aplikacji
-                        konkursu!
-                      </Text>
-                      <Text>{title}</Text>
-                    </View>
+    <PDFViewer style={{ width: "100%", height: "80vh" }}>
+      <Document>
+        <Page size="A4" style={styles.page}>
+          {questions.map((question, index) => {
+            if (currentId.current >= qrs.length - 1) {
+              currentId.current = -1;
+            }
+            currentId.current += 1;
+            console.log(currentId.current);
+            return (
+              <View
+                style={{
+                  ...styles.row,
+                  borderRight: index % 2 === 0 ? "1px" : "0px",
+                  borderRightStyle: "dashed",
+                }}
+                key={currentId.current}
+              >
+                <View style={styles.column}>
+                  <View style={{ alignItems: "center" }}>
+                    <Image
+                      style={styles.qr}
+                      src={qrs[currentId.current]}
+                    ></Image>
+                    <Text style={styles.fontMedium}>
+                      Pytanie nr {index + 1}
+                    </Text>
+                    <Text>
+                      Aby udzielić odpowiedzi - zeskanuj kod w aplikacji
+                      konkursu!
+                    </Text>
+                    <Text>{title}</Text>
                   </View>
                 </View>
-              );
-            })}
-          </Page>
-        </Document>
-      </PDFViewer>
-    </>
+              </View>
+            );
+          })}
+        </Page>
+      </Document>
+    </PDFViewer>
   );
 };

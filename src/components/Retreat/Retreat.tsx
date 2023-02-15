@@ -13,7 +13,13 @@ export const Retreat = ({ className }: { className?: string }) => {
   return (
     <Button
       className={className}
-      onClick={() => navigate(-1)}
+      onClick={() => {
+        if (location.pathname.includes("/qr/")) {
+          navigate("/");
+        } else {
+          navigate(-1);
+        }
+      }}
       color="danger"
       outline
     >

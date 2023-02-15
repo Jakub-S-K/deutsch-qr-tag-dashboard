@@ -3,7 +3,7 @@ import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
 import { mdiFileDocumentEdit, mdiTrophy, mdiPrinter } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useNavigate } from "react-router-dom";
-import { editOptions, getOptions, logout } from "../../utilities";
+import { editOptions, getOptions } from "../../utilities";
 import { useAlert } from "../../contexts";
 
 export const Main = () => {
@@ -37,16 +37,6 @@ export const Main = () => {
   });
   return (
     <>
-      <div className="row justify-content-end col-12 mt-3">
-        <Button
-          className="col-12 col-md-3 col-xl-1"
-          color="danger"
-          outline
-          onClick={() => logout()}
-        >
-          Log out
-        </Button>
-      </div>
       <h3 className="">Contest title</h3>
       <hr className="vertical-line" />
       <InputGroup className="my-2">

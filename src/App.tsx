@@ -21,9 +21,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AlertContext.Provider value={useValue()}>
-      <div className="content container">
-        <RouterProvider router={router} />
-      </div>
+      <RouterProvider router={router} />
     </AlertContext.Provider>
   );
 }

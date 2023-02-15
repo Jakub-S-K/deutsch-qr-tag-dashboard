@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { addUser, editUser, getUserQR } from "../../utilities";
 import { useAlert } from "../../contexts";
-import { Retreat } from "../../components/Retreat/Retreat";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { User, isResponse, isUser, responseStatus } from "../../backendTypes";
 
@@ -53,7 +52,6 @@ export const UserForm = () => {
   return (
     <>
       {userModify.current ? <img src={img} alt="QR" /> : null}
-      <Retreat />
       <form
         onSubmit={async (e) => {
           e.preventDefault();

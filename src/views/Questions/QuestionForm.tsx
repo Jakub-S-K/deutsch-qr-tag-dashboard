@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
-import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import { addQuestion, editQuestion } from "../../utilities";
 import {
@@ -78,7 +77,6 @@ export const QuestionForm = () => {
   const answerRef = useRef<HTMLInputElement>(null);
   return (
     <>
-      <Retreat />
       <form
         onSubmit={async (e: any) => {
           e.preventDefault();

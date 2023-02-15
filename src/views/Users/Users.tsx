@@ -5,7 +5,6 @@ import Icon from "@mdi/react";
 import { isResponse, isUserArr, User } from "../../backendTypes";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Confirm } from "../../components/Confirm/Confirm";
-import { Retreat } from "../../components/Retreat/Retreat";
 
 type ModalProps = {
   isOpen: boolean;
@@ -41,9 +40,6 @@ export const Users = () => {
   };
   return (
     <div className="row py-3">
-      <div className="col col-12">
-        <Retreat />
-      </div>
       <Confirm
         isOpen={modal.isOpen}
         toggle={() => toggleModal()}

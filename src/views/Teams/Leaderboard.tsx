@@ -8,7 +8,6 @@ import {
   Team,
 } from "../../backendTypes";
 import { useLoaderData } from "react-router-dom";
-import { Retreat } from "../../components/Retreat/Retreat";
 import { getLiveUsers } from "../../utilities";
 import Icon from "@mdi/react";
 import { mdiAccountMultiple, mdiCircleSmall } from "@mdi/js";
@@ -40,9 +39,6 @@ export const Leaderboard = () => {
   }, []);
   return (
     <div className="row py-3">
-      <div className="col col-12">
-        <Retreat />
-      </div>
       <Table striped>
         <thead>
           <tr>

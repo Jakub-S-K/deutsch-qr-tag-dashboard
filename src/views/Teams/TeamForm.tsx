@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Label } from "reactstrap";
-import { Retreat } from "../../components/Retreat/Retreat";
 import { useNavigate, useLoaderData, useParams } from "react-router-dom";
 import {
   isResponse,
@@ -82,7 +81,6 @@ export const TeamForm = () => {
   const answerRef = useRef<HTMLSelectElement>(null);
   return (
     <>
-      <Retreat />
       <form
         onSubmit={async (e: any) => {
           e.preventDefault();

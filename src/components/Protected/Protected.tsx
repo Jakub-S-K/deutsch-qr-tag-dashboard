@@ -4,6 +4,7 @@ import { useNavigate, Outlet } from "react-router-dom";
 import { useAlert } from "../../contexts";
 import { responseStatus } from "../../backendTypes";
 import { renewToken, validate } from "../../utilities";
+import { NavBar } from "../NavBar/NavBar";
 
 export const Protected = () => {
   const alert = useAlert();
@@ -63,5 +64,12 @@ export const Protected = () => {
     }
   }, [expires, timeoutID.current]);
 
-  return redirect ? null : <Outlet />;
+  return redirect ? null : (
+    <>
+      <NavBar />
+      <div className="container">
+        <Outlet />
+      </div>
+    </>
+  );
 };

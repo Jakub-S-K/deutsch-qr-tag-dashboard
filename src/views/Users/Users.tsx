@@ -14,7 +14,7 @@ type ModalProps = {
 } & User;
 
 export const Users = () => {
-  const names = ["id", "Name", "Surname", "Actions"];
+  const names = ["id", "Imię", "Nazwisko", "Akcje"];
   const [modal, setModal] = useState<ModalProps>({
     isOpen: false,
     name: "",

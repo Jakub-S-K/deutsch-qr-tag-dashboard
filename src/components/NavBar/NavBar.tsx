@@ -14,7 +14,7 @@ export const NavBar = () => {
           outline
           onClick={() => logout()}
         >
-          Log out
+          Wyloguj
         </Button>
         <Retreat className="col-5 col-lg-1" />
       </div>

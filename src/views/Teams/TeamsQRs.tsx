@@ -1,4 +1,4 @@
-import { getUserQR } from "../../utilities";
+import { getOptions, getUserQR } from "../../utilities";
 import { isResponse, isTeamArr } from "../../backendTypes";
 import {
   Page,
@@ -79,13 +79,14 @@ export const TeamsQrs = () => {
     }
     return [];
   });
-  const [title] = useState(() => {
-    return "Test";
+  const [title, setTitle] = useState(() => {
+    return "Konkurs";
   });
   const currentId = useRef(-1);
   const [qrs, setQrs] = useState<Array<any>>([]);
   useEffect(() => {
     async function getAllQrs() {
+      const options = await getOptions();
       const requestsToPerform = Array<any>();
       for (const team of teams) {
         for (const user of team.members) {
@@ -93,6 +94,7 @@ export const TeamsQrs = () => {
         }
       }
       setQrs(await Promise.all(Object.values(requestsToPerform)));
+      setTitle(options.data.title);
     }
     getAllQrs();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,4 +1,4 @@
-import { getQuestionQR } from "../../utilities";
+import { getOptions, getQuestionQR } from "../../utilities";
 import { isQuestionArr, isResponse } from "../../backendTypes";
 import {
   Page,
@@ -79,18 +79,20 @@ export const QuestionsQrs = () => {
     }
     return [];
   });
-  const [title] = useState(() => {
-    return "Test";
+  const [title, setTitle] = useState(() => {
+    return "Konkurs";
   });
   const currentId = useRef(-1);
   const [qrs, setQrs] = useState<Array<any>>([]);
   useEffect(() => {
     async function getAllQrs() {
+      const options = await getOptions();
       const requestsToPerform = Array<any>();
       for (const question of questions) {
         requestsToPerform.push(getQuestionQR(question._id));
       }
       setQrs(await Promise.all(Object.values(requestsToPerform)));
+      setTitle(options.data.title);
     }
     getAllQrs();
     // eslint-disable-next-line react-hooks/exhaustive-deps

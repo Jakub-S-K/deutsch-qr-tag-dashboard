@@ -1,7 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { InputGroup, InputGroupText, Input, Button } from "reactstrap";
+import {
+  InputGroup,
+  InputGroupText,
+  Input,
+  Button,
+  FormGroup,
+  Label,
+} from "reactstrap";
 import { mdiAccount, mdiLock } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useAlert } from "../../contexts";
@@ -12,6 +19,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const loaderData = useLoaderData();
   const alert = useAlert();
   useEffect(() => {
@@ -62,7 +70,7 @@ export const Login = () => {
           <Icon path={mdiLock} title="Password" size={1} color="black" />
         </InputGroupText>
         <Input
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="password"
           invalid={
             alert.alert === responseStatus.ERR_BAD_REQUEST ||
@@ -71,13 +79,22 @@ export const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </InputGroup>
+      <FormGroup switch>
+        <Input
+          type="switch"
+          role="switch"
+          id="showPassword"
+          onClick={() => setShowPassword((v) => !v)}
+        />
+        <Label htmlFor="showPassword">Pokaż hasło</Label>
+      </FormGroup>
       <Button
         type="submit"
         color="primary"
         className="px-5 mt-5"
         disabled={username.length === 0 || password.length === 0}
       >
-        Log in
+        Zaloguj się
       </Button>
     </form>
   );

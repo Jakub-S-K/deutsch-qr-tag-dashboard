@@ -37,7 +37,7 @@ export const Main = () => {
   });
   return (
     <>
-      <h3 className="">Contest title</h3>
+      <h3 className="">Nazwa konkursu</h3>
       <hr className="vertical-line" />
       <InputGroup className="my-2">
         <InputGroupText>
@@ -45,7 +45,7 @@ export const Main = () => {
         </InputGroupText>
         <Input
           className="input-orange"
-          placeholder={title.length > 0 ? title : "Contest title"}
+          placeholder={title.length > 0 ? title : "Nazwa konkursu"}
           onChange={(e) => setTitle(e.currentTarget.value)}
         />
       </InputGroup>
@@ -61,7 +61,7 @@ export const Main = () => {
         <Input
           className="input-orange"
           type="textarea"
-          placeholder={description.length > 0 ? description : "Description..."}
+          placeholder={description.length > 0 ? description : "Opis..."}
           onChange={(e) => setDescription(e.currentTarget.value)}
         />
       </InputGroup>
@@ -75,7 +75,7 @@ export const Main = () => {
             alert.alertAndDismiss(response.status);
           }}
         >
-          Apply changes
+          Zastosuj zmiany
         </Button>
         <Button
           color="primary"
@@ -83,10 +83,10 @@ export const Main = () => {
           className="px-5 col-12 col-md-3"
           onClick={() => navigate("/leaderboard")}
         >
-          Leaderboard
+          Tablica wyników
         </Button>
       </div>
-      <h3 className="my-3">User management</h3>
+      <h3 className="my-3">Uczestnicy</h3>
       <hr className="vertical-line" />
       <div className="col col-10 d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
@@ -95,14 +95,14 @@ export const Main = () => {
           className="px-5 col-12 col-md-3"
           onClick={() => navigate("/users")}
         >
-          Manage
+          Zarządzaj
         </Button>
         <Button
           color="success"
           className="px-5 col-12 col-md-3"
           onClick={() => navigate("/add/user")}
         >
-          Add user
+          Dodaj uczestnika
         </Button>
         <Button
           color="primary"
@@ -112,7 +112,7 @@ export const Main = () => {
           <Icon path={mdiPrinter} title="print" size={1} color="white" />
         </Button>
       </div>
-      <h3 className="my-3">Questions management</h3>
+      <h3 className="my-3">Pytania</h3>
       <hr className="vertical-line" />
       <div className="col col-10 d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
@@ -121,14 +121,14 @@ export const Main = () => {
           className="px-5 col-12 col-md-3"
           onClick={() => navigate("/questions")}
         >
-          Manage
+          Zarządzaj
         </Button>
         <Button
           color="success"
           className="px-5 col-12 col-md-3"
           onClick={() => navigate("/add/question")}
         >
-          Add question
+          Dodaj pytanie
         </Button>
         <Button
           color="primary"
@@ -145,7 +145,7 @@ export const Main = () => {
           <Icon path={mdiPrinter} title="print" size={1} color="white" /> V2
         </Button>
       </div>
-      <h3 className="my-3">Teams management</h3>
+      <h3 className="my-3">Drużyny</h3>
       <hr className="vertical-line" />
       <div className="col col-6 d-flex flex-row flex-wrap justify-content-between gap-2">
         <Button
@@ -154,14 +154,14 @@ export const Main = () => {
           className="px-5 col-12 col-md-5"
           onClick={() => navigate("/teams")}
         >
-          Manage
+          Zarządzaj
         </Button>
         <Button
           color="success"
           className="px-5 col-12 col-md-5"
           onClick={() => navigate("/add/team")}
         >
-          Add team
+          Dodaj Drużyne
         </Button>
       </div>
     </>

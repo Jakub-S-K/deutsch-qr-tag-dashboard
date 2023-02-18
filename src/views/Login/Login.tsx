@@ -46,7 +46,7 @@ export const Login = () => {
         }
       }}
     >
-      <h3 className="mb-5">Log in to continue</h3>
+      <h3 className="mb-5">Zaloguj się aby kontynuować</h3>
       <InputGroup className="my-2">
         <InputGroupText>
           <Icon path={mdiAccount} title="Username" size={1} color="black" />

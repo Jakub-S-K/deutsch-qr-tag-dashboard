@@ -14,7 +14,6 @@ import {
   getTeams,
   validate,
   getTeam,
-  getLeaders,
 } from "./utilities";
 import { Users as UsersPage } from "./views/Users/Users";
 import { UserForm } from "./views/Users/UserForm";
@@ -87,7 +86,6 @@ export const routes: RouteObject[] = [
       },
       {
         path: "leaderboard",
-        loader: () => getLeaders(),
         element: <Leaderboard />,
       },
       {

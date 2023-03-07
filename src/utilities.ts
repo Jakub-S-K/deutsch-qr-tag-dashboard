@@ -81,11 +81,8 @@ export const getTeam = async (id: string | undefined) => {
 export const getUsersWithoutTeam = async () => {
   return GET_BOILERPLATE<User[]>("api/users/free");
 };
-export const getLeaders = async () => {
-  return GET_BOILERPLATE<Team[]>("api/leaderboard");
-};
 export const getLiveUsers = async () => {
-  return GET_BOILERPLATE<OnlineInTeam[]>("api/leaderboard/users/live");
+  return GET_BOILERPLATE<OnlineInTeam[]>("api/leaderboard/");
 };
 export const getUserQR = (id: string | undefined) => {
   return GET_BOILERPLATE<Blob>(`api/qr/user/${id}`, {

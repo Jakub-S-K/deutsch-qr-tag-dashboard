@@ -55,7 +55,7 @@ export const Leaderboard = () => {
                 <Icon path={mdiAccountMultiple} size={1} />
               </td>
               <td key={index + "-name"}>{team.team}</td>
-              <td>{10 - index}</td>
+              <td>{team.points}</td>
             </tr>
           ))}
         </tbody>

@@ -34,7 +34,7 @@ Font.register({
 const styles = StyleSheet.create({
   page: {
     padding: "1cm",
-    flexDirection: "row",
+    flexDirection: "column",
     flexWrap: "wrap",
     backgroundColor: "#FFF",
     fontFamily: "Roboto",
@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "column",
-    width: "50%",
-    height: "25%",
+    width: "100%",
+    height: "50%",
     alignItems: "center",
     fontSize: "8px",
-    justifyContent: "space-between",
+    justifyContent: "center",
     borderBottom: "1px",
     borderStyle: "dashed",
     paddingBottom: "10px",
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     fontWeight: 700,
   },
   qr: {
-    width: "4cm",
-    height: "4cm",
+    width: "12cm",
+    height: "12cm",
   },
 });
 export const QuestionsQrsV2 = () => {
@@ -116,7 +116,7 @@ export const QuestionsQrsV2 = () => {
               <View
                 style={{
                   ...styles.row,
-                  borderRight: index % 2 === 0 ? "1px" : "0px",
+                  borderRight: "0px",
                   borderRightStyle: "dashed",
                 }}
                 key={currentId.current}

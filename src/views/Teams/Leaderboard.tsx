@@ -10,7 +10,7 @@ import Icon from "@mdi/react";
 import { mdiAccountMultiple, mdiCircleSmall } from "@mdi/js";
 
 export const Leaderboard = () => {
-  const names = ["Online", "Name", "Points"];
+  const names = ["Aktywni", "Nazwa drużyny", "Zdobyte punkty"];
   const [live, setLive] = useState<OnlineInTeam[]>([]);
   useEffect(() => {
     async function updateOnline() {
